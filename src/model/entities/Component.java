@@ -8,14 +8,16 @@ public abstract class Component {
     private String name;
     private ComponentType componentType;
     private Double taxRate;
+    private Project project;
 
     public Component() {
     }
 
-    public Component(String name, ComponentType componentType, Double taxRate) {
+    public Component(String name, ComponentType componentType, Double taxRate, Project project) {
         this.name = name;
         this.componentType = componentType;
         this.taxRate = taxRate;
+        this.project = project;
     }
 
     public int getId() {
@@ -48,6 +50,14 @@ public abstract class Component {
 
     public void setTaxRate(Double taxRate) {
         this.taxRate = taxRate;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public abstract Double calculateCost();

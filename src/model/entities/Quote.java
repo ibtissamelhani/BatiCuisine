@@ -9,6 +9,7 @@ public class Quote {
     private LocalDate validityDate;
     private LocalDate issueDate;
     private Boolean isAccepted;
+    private Project project;
 
     public Quote() {
     }
@@ -58,5 +59,13 @@ public class Quote {
 
     public void setAccepted(Boolean accepted) {
         isAccepted = accepted;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
