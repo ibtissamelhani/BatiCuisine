@@ -13,11 +13,10 @@ public abstract class Component {
     public Component() {
     }
 
-    public Component(String name, ComponentType componentType, Double taxRate, Project project) {
+    public Component(String name, ComponentType componentType, Double taxRate) {
         this.name = name;
         this.componentType = componentType;
         this.taxRate = taxRate;
-        this.project = project;
     }
 
     public int getId() {
