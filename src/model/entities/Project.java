@@ -2,6 +2,7 @@ package model.entities;
 
 import model.enums.ProjectStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project {
@@ -18,13 +19,13 @@ public class Project {
     public Project() {
     }
 
-    public Project(String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus,Double surfaceArea, List<Component> componentList, Client client) {
+    public Project(String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus,Double surfaceArea, Client client) {
         this.projectName = projectName;
         this.profitMargin = profitMargin;
         this.totalCost = totalCost;
         this.projectStatus = projectStatus;
         this.surfaceArea = surfaceArea;
-        this.componentList = componentList;
+        this.componentList = new ArrayList<>();
         this.client = client;
     }
 
@@ -82,5 +83,13 @@ public class Project {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Double getSurfaceArea() {
+        return surfaceArea;
+    }
+
+    public void setSurfaceArea(Double surfaceArea) {
+        this.surfaceArea = surfaceArea;
     }
 }

@@ -16,7 +16,7 @@ public class ClientUI {
         this.scanner = new Scanner(System.in);
     }
 
-    public void createClientUI() {
+    public Client createClientUI() {
 
         System.out.println("Create a New Client");
 
@@ -48,13 +48,14 @@ public class ClientUI {
             System.out.println("Phone: " + newClient.getPhone());
             System.out.println("Professional: " + (newClient.getProfessional() ? "Yes" : "No"));
             System.out.println( (newClient.getProfessional() ? "discount Percentage: " + newClient.getDiscountPercentage() +" %" : ""));
+            return newClient;
         } else {
             System.out.println("Failed to create client. The name might already be in use.");
         }
-
+        return null;
     }
 
-    public void searchClientUI() {
+    public Client searchClientUI() {
         System.out.print("Enter client name: ");
         String name = scanner.nextLine();
 
@@ -64,8 +65,10 @@ public class ClientUI {
             System.out.println("Name: " + client.get().getName());
             System.out.println("Address: " + client.get().getAddress());
             System.out.println("Phone: " + client.get().getPhone());
+            return client.get();
         }else {
             System.out.println("Failed to get client with name " + name);
+            return null;
         }
     }
 }

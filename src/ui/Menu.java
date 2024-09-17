@@ -1,15 +1,24 @@
 package ui;
 
+import database.DataBaseConnection;
+import model.entities.Client;
 import repository.ClientRepositoryImpl;
+import repository.ProjectRepositoryImpl;
 import service.ClientService;
+import service.ProjectService;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Menu {
 
-    private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl();
+    private Connection connection =  DataBaseConnection.getInstance().getConnection();
+    private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
     private ClientService clientService = new ClientService(clientRepository);
+    private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(connection);
+    private ProjectService projectService = new ProjectService(projectRepository);
     private ClientUI clientUI = new ClientUI(clientService);
+    private ProjectUI projectUI = new ProjectUI(projectService);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;
@@ -64,12 +73,14 @@ public class Menu {
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();
+            Client client = null;
 
             switch(choice){
                 case "1":
-
+                    client = clientUI.searchClientUI();
                     break;
                 case "2":
+                    client = clientUI.createClientUI();
                     break;
                 case "3":
                     quit = true;
@@ -80,6 +91,11 @@ public class Menu {
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice");
+            }
+            if (client != null) {
+                projectUI.createProjectForClient(client);
+            } else {
+                System.out.println("Client non trouvé ou création échouée.");
             }
 
         }
