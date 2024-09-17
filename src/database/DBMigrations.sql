@@ -21,6 +21,7 @@ CREATE TABLE Projects (
                          project_status Project_Status NOT NULL DEFAULT 'IN_PROGRESS',
                          client_id  INTEGER REFERENCES Clients(id) ON DELETE SET NULL
 );
+
 CREATE TABLE Components (
                            id SERIAL PRIMARY KEY,
                            name VARCHAR(100) NOT NULL,
