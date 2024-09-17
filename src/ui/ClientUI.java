@@ -3,6 +3,7 @@ package ui;
 import model.entities.Client;
 import service.ClientService;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ClientUI {
@@ -44,5 +45,20 @@ public class ClientUI {
             System.out.println("Failed to create client. The name might already be in use.");
         }
 
+    }
+
+    public void searchClientUI() {
+        System.out.print("Enter client name: ");
+        String name = scanner.nextLine();
+
+        Optional<Client> client = clientService.getClientByName(name);
+        if (client.isPresent()) {
+            System.out.println("\n Client trouvé !\n");
+            System.out.println("Name: " + client.get().getName());
+            System.out.println("Address: " + client.get().getAddress());
+            System.out.println("Phone: " + client.get().getPhone());
+        }else {
+            System.out.println("Failed to get client with name " + name);
+        }
     }
 }

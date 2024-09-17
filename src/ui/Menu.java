@@ -66,8 +66,11 @@ public class Menu {
             String choice = scanner.nextLine();
 
             switch(choice){
+                case "1":
+
+                    break;
                 case "2":
-                    clientUI.createClientUI();
+
                     break;
                 case "3":
                     quit = true;
