@@ -10,16 +10,18 @@ public class Client {
     private String address;
     private String phone;
     private Boolean isProfessional;
+    private Double discountPercentage;
     private List<Project> projects;
 
     public Client() {
     }
 
-    public Client(String name, String address, String phone, Boolean isProfessional) {
+    public Client(String name, String address, String phone, Boolean isProfessional, Double discountPercentage) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.isProfessional = isProfessional;
+        this.discountPercentage = discountPercentage;
         this.projects = new ArrayList<>();
     }
 
@@ -69,6 +71,14 @@ public class Client {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public Double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(Double discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 
     @Override

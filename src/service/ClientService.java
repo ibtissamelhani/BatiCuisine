@@ -15,14 +15,14 @@ public class ClientService {
         this.clientRepositoryImpl = clientRepositoryImpl;
     }
 
-    public Client creatClient(String name, String address, String phone, boolean isProfessional) {
+    public Client creatClient(String name, String address, String phone, boolean isProfessional, Double discountPercentage) {
 
         Optional<Client> existingClient = getClientByName(name);
         if (existingClient.isPresent()) {
             System.out.println("Client already exists. Please use a different Name.");
             return null;
         }
-        Client client = new Client(name, address, phone, isProfessional);
+        Client client = new Client(name, address, phone, isProfessional,discountPercentage);
         clientRepositoryImpl.save(client);
         return client;
     }
