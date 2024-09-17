@@ -59,5 +59,5 @@ public abstract class Component {
         this.project = project;
     }
 
-    public abstract Double calculateCost();
+    public abstract Double calculateTotalCost();
 }
