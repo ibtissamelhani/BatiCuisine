@@ -19,13 +19,14 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public Client save(Client client) {
-        String sql = "INSERT INTO clients (name, address, phone, is_professional) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO clients (name, address, phone, is_professional, discount_percentage) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, client.getName());
             stmt.setString(2, client.getAddress());
             stmt.setString(3, client.getPhone());
             stmt.setBoolean(4, client.getProfessional());
+            stmt.setDouble(5, client.getDiscountPercentage());
             stmt.executeUpdate();
 
         } catch (SQLException e) {

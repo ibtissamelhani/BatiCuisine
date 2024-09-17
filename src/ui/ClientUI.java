@@ -33,7 +33,13 @@ public class ClientUI {
         String isProfessionalInput = scanner.nextLine();
         boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
 
-        Client newClient = clientService.creatClient(name, address, phone, isProfessional);
+        double discountPercentage = 0.0;
+        if (isProfessional) {
+            System.out.println("enter discount percentage: ");
+            discountPercentage = scanner.nextDouble();
+        }
+
+        Client newClient = clientService.creatClient(name, address, phone, isProfessional, discountPercentage);
 
         if (newClient != null) {
             System.out.println("\n Client created successfully! \n");
@@ -41,6 +47,7 @@ public class ClientUI {
             System.out.println("Address: " + newClient.getAddress());
             System.out.println("Phone: " + newClient.getPhone());
             System.out.println("Professional: " + (newClient.getProfessional() ? "Yes" : "No"));
+            System.out.println( (newClient.getProfessional() ? "discount Percentage: " + newClient.getDiscountPercentage() +" %" : ""));
         } else {
             System.out.println("Failed to create client. The name might already be in use.");
         }
