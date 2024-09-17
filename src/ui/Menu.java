@@ -1,8 +1,15 @@
 package ui;
 
+import repository.ClientRepositoryImpl;
+import service.ClientService;
+
 import java.util.Scanner;
 
 public class Menu {
+
+    private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl();
+    private ClientService clientService = new ClientService(clientRepository);
+    private ClientUI clientUI = new ClientUI(clientService);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;
@@ -59,6 +66,12 @@ public class Menu {
             String choice = scanner.nextLine();
 
             switch(choice){
+                case "1":
+
+                    break;
+                case "2":
+
+                    break;
                 case "3":
                     quit = true;
                     System.out.println("return to principal menu");
