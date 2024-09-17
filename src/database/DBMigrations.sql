@@ -17,6 +17,7 @@ CREATE TABLE Projects (
                          project_name VARCHAR(100) NOT NULL,
                          profit_margin DOUBLE PRECISION,
                          total_cost DOUBLE PRECISION,
+                         surface_area DOUBLE PRECISION,
                          project_status Project_Status NOT NULL DEFAULT 'IN_PROGRESS',
                          client_id  INTEGER REFERENCES Clients(id) ON DELETE SET NULL
 );

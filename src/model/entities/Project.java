@@ -11,17 +11,19 @@ public class Project {
     private Double profitMargin;
     private Double totalCost;
     private ProjectStatus projectStatus;
+    private Double surfaceArea ;
     private List<Component> componentList;
     private Client client;
 
     public Project() {
     }
 
-    public Project(String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, List<Component> componentList, Client client) {
+    public Project(String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus,Double surfaceArea, List<Component> componentList, Client client) {
         this.projectName = projectName;
         this.profitMargin = profitMargin;
         this.totalCost = totalCost;
         this.projectStatus = projectStatus;
+        this.surfaceArea = surfaceArea;
         this.componentList = componentList;
         this.client = client;
     }
