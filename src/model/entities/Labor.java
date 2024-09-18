@@ -52,8 +52,9 @@ public class Labor extends Component {
         this.workerProductivity = workerProductivity;
     }
 
-    public Double calculateCost() {
-        System.out.println("Labor calculateCost");
-        return 0.0;
+    public Double calculateTotalCost() {
+        Double costBeforeTax = hourlyRate * workHours * workerProductivity;
+        Double costWithTax = costBeforeTax * (1 + (getTaxRate() / 100));
+        return costWithTax;
     }
 }

@@ -13,8 +13,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     private Connection connection;
 
-    public ClientRepositoryImpl() {
-        this.connection = DataBaseConnection.getInstance().getConnection();
+    public ClientRepositoryImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

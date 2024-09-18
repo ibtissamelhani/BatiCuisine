@@ -61,8 +61,9 @@ public class Material extends Component {
         this.qualityCoefficient = qualityCoefficient;
     }
 
-    public Double calculateCost() {
-        System.out.println("Materiel calculateCost");
-        return 0.0;
+    public Double calculateTotalCost() {
+        Double costBeforeTax = (unitCost * quantity * qualityCoefficient) + transportCost;
+        Double costWithTax = costBeforeTax * (1 + (getTaxRate() / 100));
+        return costWithTax;
     }
 }
