@@ -68,10 +68,10 @@ public class Menu {
             System.out.println("********************************************************************************");
             System.out.println("*  1. Add new client                                                           *");
             System.out.println("*  2. Update a client                                                          *");
-            System.out.println("*  2. Delete a client                                                          *");
-            System.out.println("*  2. Show all clients                                                         *");
-            System.out.println("*  3. Return to Main Menu                                                      *");
-            System.out.println("*  4. Exit                                                                     *");
+            System.out.println("*  3. Delete a client                                                          *");
+            System.out.println("*  4. Show all clients                                                         *");
+            System.out.println("*  5. Return to Main Menu                                                      *");
+            System.out.println("*  6. Exit                                                                     *");
             System.out.println("********************************************************************************\n" + RESET);
 
             System.out.print("enter your choice: ");
@@ -81,14 +81,14 @@ public class Menu {
                 case "1":
                     clientUI.createClientUI();
                     break;
-                case "2":
-
+                case "4":
+                    clientUI.showAllClients();
                     break;
-                case "3":
+                case "5":
                     quit = true;
                     System.out.println("return to principal menu");
                     break;
-                case "4":
+                case "6":
                     System.out.println("exit");
                     System.exit(0);
                 default:

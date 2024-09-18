@@ -3,12 +3,14 @@ package ui;
 import model.entities.Client;
 import service.ClientService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class ClientUI {
 
     final String GREEN = "\u001B[32m";
+    final String RED = "\u001B[31m";
     final String RESET = "\u001B[0m";
 
     private ClientService clientService;
@@ -73,5 +75,21 @@ public class ClientUI {
             System.out.println("Failed to get client with name " + name);
             return null;
         }
+    }
+
+    public void showAllClients() {
+        System.out.println(RED+"List of All Clients "+RESET);
+        List<Client> clients = clientService.getAllClients();
+        if (clients != null) {
+            System.out.println("\n+--------------------+--------------------+--------------------+-------------------+-------------------+-------------------+");
+            System.out.printf("| %-18s | %-18s | %-18s |%-18s | %-18s | %-18s |\n","ID", "Name", "Address", "Phone", "IsProfessional", "DiscountPercentage");
+            System.out.println("+--------------------+--------------------+--------------------+-------------------+-------------------+-------------------+");
+            for (Client client : clients) {
+                System.out.printf("| %-18s | %-18s | %-18s |%-18s | %-18s |%-18s |%-18s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional()?"yes":"no", client.getProfessional()? client.getDiscountPercentage(): "-");
+                System.out.println("+--------------------+--------------------+--------------------+-------------------+");
+
+            }
+        }
+
     }
 }
