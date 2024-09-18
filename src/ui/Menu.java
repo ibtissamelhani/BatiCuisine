@@ -34,8 +34,8 @@ public class Menu {
             System.out.println("\n********************************************************************************");
             System.out.println("*                                  Principal Menu                              *");
             System.out.println("********************************************************************************");
-            System.out.println("*  1. Create a new project                                                     *");
-            System.out.println("*  2. Display existing projects                                                *");
+            System.out.println("*  1. Client Management                                                        *");
+            System.out.println("*  2. Project Management                                                       *");
             System.out.println("*  3. Calculate the cost of a project                                          *");
             System.out.println("*  4. Exit                                                                     *");
             System.out.println("********************************************************************************\n");
@@ -44,10 +44,10 @@ public class Menu {
             String choice = scanner.nextLine();
             switch(choice){
                 case "1":
-                    projectMenu();
+                    clientMenu();
                     break;
                 case "2":
-
+                    projectMenu();
                     break;
                 case "3":
 
@@ -61,6 +61,42 @@ public class Menu {
         }
     }
 
+    public void clientMenu() {
+        while(!quit) {
+            System.out.println(YELLOW+"\n********************************************************************************");
+            System.out.println("*                                  Client Management                           *");
+            System.out.println("********************************************************************************");
+            System.out.println("*  1. Add new client                                                           *");
+            System.out.println("*  2. Update a client                                                          *");
+            System.out.println("*  2. Delete a client                                                          *");
+            System.out.println("*  2. Show all clients                                                         *");
+            System.out.println("*  3. Return to Main Menu                                                      *");
+            System.out.println("*  4. Exit                                                                     *");
+            System.out.println("********************************************************************************\n" + RESET);
+
+            System.out.print("enter your choice: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    clientUI.createClientUI();
+                    break;
+                case "2":
+
+                    break;
+                case "3":
+                    quit = true;
+                    System.out.println("return to principal menu");
+                    break;
+                case "4":
+                    System.out.println("exit");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice");
+            }
+
+        }
+    }
     public void projectMenu(){
         while(!quit){
             System.out.println(BLUE+"\n\n*     Would you like to search for an existing client or add a new one?        *");

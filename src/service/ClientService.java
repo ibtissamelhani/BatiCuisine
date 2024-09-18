@@ -2,7 +2,6 @@ package service;
 
 import model.entities.Client;
 import repository.ClientRepositoryImpl;
-import repository.interfaces.ClientRepository;
 
 import java.util.List;
 import java.util.Optional;

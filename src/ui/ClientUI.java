@@ -8,6 +8,9 @@ import java.util.Scanner;
 
 public class ClientUI {
 
+    final String GREEN = "\u001B[32m";
+    final String RESET = "\u001B[0m";
+
     private ClientService clientService;
     Scanner scanner;
 
@@ -43,11 +46,11 @@ public class ClientUI {
 
         if (newClient != null) {
             System.out.println("\n Client created successfully! \n");
-            System.out.println("Name: " + newClient.getName());
-            System.out.println("Address: " + newClient.getAddress());
-            System.out.println("Phone: " + newClient.getPhone());
-            System.out.println("Professional: " + (newClient.getProfessional() ? "Yes" : "No"));
-            System.out.println( (newClient.getProfessional() ? "discount Percentage: " + newClient.getDiscountPercentage() +" %" : ""));
+            System.out.println(GREEN+"- Name: "+RESET + newClient.getName());
+            System.out.println(GREEN+"- Address: "+RESET + newClient.getAddress());
+            System.out.println(GREEN+"- Phone: "+RESET + newClient.getPhone());
+            System.out.println(GREEN+"- Professional: "+RESET + (newClient.getProfessional() ? "Yes" : "No"));
+            System.out.println( (newClient.getProfessional() ? GREEN+"- discount Percentage: "+RESET + newClient.getDiscountPercentage() +" %" : ""));
             return newClient;
         } else {
             System.out.println("Failed to create client. The name might already be in use.");
@@ -62,9 +65,9 @@ public class ClientUI {
         Optional<Client> client = clientService.getClientByName(name);
         if (client.isPresent()) {
             System.out.println("\n Client trouvé !\n");
-            System.out.println("Name: " + client.get().getName());
-            System.out.println("Address: " + client.get().getAddress());
-            System.out.println("Phone: " + client.get().getPhone());
+            System.out.println(GREEN+"- Name: "+RESET + client.get().getName());
+            System.out.println(GREEN+"- Address: "+RESET + client.get().getAddress());
+            System.out.println(GREEN+"- Phone: "+RESET + client.get().getPhone());
             return client.get();
         }else {
             System.out.println("Failed to get client with name " + name);
