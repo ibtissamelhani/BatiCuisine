@@ -12,14 +12,16 @@ public class ProjectUI {
 
     private ProjectService projectService;
     private MaterialUI materialUI;
+    private LaborUI laborUI;
     private Scanner scanner;
     final String YELLOW = "\u001B[33m";
     final String BLUE = "\u001B[34m";
     final String RESET = "\u001B[0m";
 
-    public ProjectUI(ProjectService projectService,MaterialUI materialUI) {
+    public ProjectUI(ProjectService projectService,MaterialUI materialUI, LaborUI laborUI) {
         this.projectService = projectService;
         this.materialUI = materialUI;
+        this.laborUI = laborUI;
         this.scanner = new Scanner(System.in);
     }
 
@@ -44,6 +46,7 @@ public class ProjectUI {
         Project newProject = new Project(projectName, profitMargin, totalCost, ProjectStatus.IN_PROGRESS, surfaceArea, client);
         Project savedProject = projectService.createProject(newProject);
         materialUI.addMaterialUI(savedProject);
+        laborUI.addLaborUI(savedProject);
 
     }
 }

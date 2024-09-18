@@ -3,9 +3,11 @@ package ui;
 import database.DataBaseConnection;
 import model.entities.Client;
 import repository.ClientRepositoryImpl;
+import repository.LaborRepositoryImpl;
 import repository.MaterialRepositoryImpl;
 import repository.ProjectRepositoryImpl;
 import service.ClientService;
+import service.LaborService;
 import service.MaterialService;
 import service.ProjectService;
 
@@ -19,14 +21,17 @@ public class Menu {
     private MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
     private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
     private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(connection);
+    private LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
 
     private ClientService clientService = new ClientService(clientRepository);
     private ProjectService projectService = new ProjectService(projectRepository);
     private MaterialService materialService = new MaterialService(materialRepository);
+    private LaborService laborService = new LaborService(laborRepository);
 
     private MaterialUI materialUI = new MaterialUI(materialService);
+    private LaborUI laborUI = new LaborUI(laborService);
     private ClientUI clientUI = new ClientUI(clientService);
-    private ProjectUI projectUI = new ProjectUI(projectService,materialUI);
+    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;
