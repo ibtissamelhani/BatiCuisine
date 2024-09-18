@@ -11,6 +11,7 @@ public class ClientUI {
 
     final String GREEN = "\u001B[32m";
     final String RED = "\u001B[31m";
+    final String BLUE = "\u001B[34m";
     final String RESET = "\u001B[0m";
 
     private ClientService clientService;
@@ -60,13 +61,74 @@ public class ClientUI {
         return null;
     }
 
+    public void updateClientUI() {
+        System.out.print("Enter client name to update: ");
+        String name = scanner.nextLine();
+        Optional<Client> existingClient = clientService.getClientByName(name);
+
+        if (existingClient.isPresent()) {
+            Client client = existingClient.get();
+            System.out.println("Client found ! ");
+            System.out.println(GREEN + "- Name: " + RESET + client.getName()+ GREEN +"- Address: "  + RESET+ client.getAddress()+ GREEN +"- Phone: " + RESET + client.getPhone()+GREEN + "- Professional: " + RESET + (client.getProfessional() ? "Yes" : "No")  );
+            if (client.getProfessional()) {
+                System.out.println(GREEN + "- Discount Percentage: " + RESET + client.getDiscountPercentage() + " %");
+            }
+
+            System.out.print("Enter new Name (or press Enter to keep the old one): ");
+            String newName = scanner.nextLine();
+            if (!newName.trim().isEmpty()) {
+                client.setName(newName);
+            }
+
+            System.out.print("Enter new Address (or press Enter to keep the old one): ");
+            String newAddress = scanner.nextLine();
+            if (!newAddress.trim().isEmpty()) {
+                client.setAddress(newAddress);
+            }
+
+            System.out.print("Enter new Phone (or press Enter to keep the old one): ");
+            String newPhone = scanner.nextLine();
+            if (!newPhone.trim().isEmpty()) {
+                client.setPhone(newPhone);
+            }
+
+            System.out.print("Is the client professional? (yes/no or press Enter to keep the old value): ");
+            String isProfessionalInput = scanner.nextLine();
+            if (!isProfessionalInput.trim().isEmpty()) {
+                boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
+                client.setProfessional(isProfessional);
+
+                if (isProfessional) {
+                    System.out.print("Enter new discount percentage");
+                    String discountInput = scanner.nextLine();
+                    if (!discountInput.trim().isEmpty()) {
+                        double discountPercentage = Double.parseDouble(discountInput);
+                        client.setDiscountPercentage(discountPercentage);
+                    }
+                }
+            }
+
+            Client updatedClient = clientService.updateClient(client);
+            System.out.println("\n Client updated successfully! \n");
+            System.out.println(BLUE+"- Name: "+RESET + updatedClient.getName());
+            System.out.println(BLUE+"- Address: "+RESET + updatedClient.getAddress());
+            System.out.println(BLUE+"- Phone: "+RESET + updatedClient.getPhone());
+            System.out.println(BLUE+"- Professional: "+RESET + (updatedClient.getProfessional() ? "Yes" : "No"));
+            System.out.println( (updatedClient.getProfessional() ? RED+"- discount Percentage: "+RESET + updatedClient.getDiscountPercentage() +" %" : ""));
+
+        } else {
+            System.out.println(RED + "Client not found!" + RESET);
+        }
+    }
+
+
     public Client searchClientUI() {
         System.out.print("Enter client name: ");
         String name = scanner.nextLine();
 
         Optional<Client> client = clientService.getClientByName(name);
         if (client.isPresent()) {
-            System.out.println("\n Client trouvé !\n");
+            System.out.println("\n Client found !\n");
             System.out.println(GREEN+"- Name: "+RESET + client.get().getName());
             System.out.println(GREEN+"- Address: "+RESET + client.get().getAddress());
             System.out.println(GREEN+"- Phone: "+RESET + client.get().getPhone());
@@ -78,15 +140,15 @@ public class ClientUI {
     }
 
     public void showAllClients() {
-        System.out.println(RED+"List of All Clients "+RESET);
+        System.out.println(RED+"\t\t\t\t List of All Clients "+RESET);
         List<Client> clients = clientService.getAllClients();
         if (clients != null) {
-            System.out.println("\n+--------------------+--------------------+--------------------+-------------------+-------------------+-------------------+");
-            System.out.printf("| %-18s | %-18s | %-18s |%-18s | %-18s | %-18s |\n","ID", "Name", "Address", "Phone", "IsProfessional", "DiscountPercentage");
-            System.out.println("+--------------------+--------------------+--------------------+-------------------+-------------------+-------------------+");
+            System.out.println("\n+------+------------------+--------------------------+---------------------+------------------+-------------+");
+            System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s | %-10s |\n","ID", "Name", "Address", "Phone", "Professional", "Discount(%)");
+            System.out.println("+------+------------------+--------------------------+---------------------+------------------+-------------+");
             for (Client client : clients) {
-                System.out.printf("| %-18s | %-18s | %-18s |%-18s | %-18s |%-18s |%-18s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional()?"yes":"no", client.getProfessional()? client.getDiscountPercentage(): "-");
-                System.out.println("+--------------------+--------------------+--------------------+-------------------+");
+                System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s |%-12s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional()?"yes":"no", client.getDiscountPercentage());
+                System.out.println("+------+------------------+--------------------------+---------------------+------------------+-------------+");
 
             }
         }

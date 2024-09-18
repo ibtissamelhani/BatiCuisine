@@ -38,18 +38,7 @@ public class ClientService {
         clientRepositoryImpl.delete(id);
     }
 
-    public Client updateClient(int id, String name, String address, String phone, boolean isProfessional) {
-        Optional<Client> existingClient = getClientByName(name);
-        if (existingClient.isPresent()) {
-            Client client = existingClient.get();
-            client.setName(name);
-            client.setAddress(address);
-            client.setPhone(phone);
-            client.setProfessional(isProfessional);
-            clientRepositoryImpl.update(client);
-            return client;
-        }
-        System.out.println("Client doesn't exists. Please use a different id.");
-        return null;
+    public Client updateClient(Client client) {
+        return clientRepositoryImpl.update(client);
     }
 }

@@ -74,6 +74,7 @@ public class ClientRepositoryImpl implements ClientRepository {
                 client.setAddress(rs.getString("address"));
                 client.setPhone(rs.getString("phone"));
                 client.setProfessional(rs.getBoolean("is_professional"));
+                client.setDiscountPercentage(rs.getDouble("discount_percentage"));
                 return Optional.of(client);
             }
 
@@ -86,7 +87,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public Client update(Client client) {
-        String sql = "UPDATE clients SET name = ?, address = ?, phone = ?, is_professional = ? WHERE id = ?";
+        String sql = "UPDATE clients SET name = ?, address = ?, phone = ?, is_professional = ?, discount_percentage=? WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -94,7 +95,8 @@ public class ClientRepositoryImpl implements ClientRepository {
             stmt.setString(2, client.getAddress());
             stmt.setString(3, client.getPhone());
             stmt.setBoolean(4, client.getProfessional());
-            stmt.setInt(5, client.getId());
+            stmt.setDouble(5, client.getDiscountPercentage());
+            stmt.setInt(6, client.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -129,6 +131,7 @@ public class ClientRepositoryImpl implements ClientRepository {
                 client.setAddress(rs.getString("address"));
                 client.setPhone(rs.getString("phone"));
                 client.setProfessional(rs.getBoolean("is_professional"));
+                client.setDiscountPercentage(rs.getDouble("discount_percentage"));
                 clients.add(client);
             }
         } catch (SQLException e) {
