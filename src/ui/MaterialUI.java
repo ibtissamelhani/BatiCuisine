@@ -50,7 +50,7 @@ public class MaterialUI {
 
         Material material = new Material(name, ComponentType.MATERIAL, quantity,project, unitCost, transportCost, qualityCoefficient, taxRate);
 
-        boolean success = materialService.addMaterialToProject(material);
+        boolean success = materialService.addMaterial(material);
 
         if (success) {
             System.out.println(GREEN+"Material added successfully!"+RESET);

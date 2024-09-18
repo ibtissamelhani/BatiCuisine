@@ -11,7 +11,7 @@ public class MaterialService {
         this.materialRepository = materialRepository;
     }
 
-    public boolean addMaterialToProject(Material material) {
+    public boolean addMaterial(Material material) {
         try {
             materialRepository.save(material);
             return true;
