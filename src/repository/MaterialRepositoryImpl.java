@@ -21,7 +21,7 @@ public class MaterialRepositoryImpl implements MaterialRepository {
         try {
             connection.setAutoCommit(false);
 
-            try (PreparedStatement stmtComponent = connection.prepareStatement(sqlComponent)){
+            try (PreparedStatement stmtComponent = connection.prepareStatement(sqlComponent, Statement.RETURN_GENERATED_KEYS)){
                 stmtComponent.setString(1, material.getName());
                 stmtComponent.setObject(2, material.getComponentType().name());
                 stmtComponent.setDouble(3, material.getTaxRate());
@@ -32,6 +32,7 @@ public class MaterialRepositoryImpl implements MaterialRepository {
                 if (rs.next()) {
                     material.setId(rs.getInt(1));
                 }
+
             }
 
             try (PreparedStatement stmtMaterial = connection.prepareStatement(sqlMaterial)) {
