@@ -142,9 +142,11 @@ public class ClientUI {
         Optional<Client> client = clientService.getClientByName(name);
         if (client.isPresent()) {
             System.out.println("\n Client found !\n");
-            System.out.println(GREEN+"- Name: "+RESET + client.get().getName());
-            System.out.println(GREEN+"- Address: "+RESET + client.get().getAddress());
-            System.out.println(GREEN+"- Phone: "+RESET + client.get().getPhone());
+            System.out.println(BLUE+"- Name: "+RESET + client.get().getName());
+            System.out.println(BLUE+"- Address: "+RESET + client.get().getAddress());
+            System.out.println(BLUE+"- Phone: "+RESET + client.get().getPhone());
+            System.out.println(BLUE+"- Professional: "+RESET + (client.get().getProfessional() ? "Yes" : "No"));
+            System.out.println( (client.get().getProfessional() ? BLUE+"- discount Percentage: "+RESET + client.get().getDiscountPercentage() +" %" : ""));
             return client.get();
         }else {
             System.out.println("Failed to get client with name " + name);

@@ -11,7 +11,7 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public boolean createProject(Project project) {
+    public Project createProject(Project project) {
         return projectRepository.save(project);
     }
 }

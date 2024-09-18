@@ -15,7 +15,7 @@ public class MaterialRepositoryImpl implements MaterialRepository {
 
     @Override
     public void save(Material material) {
-        String sqlComponent = "INSERT INTO components (name, component_type, tax_rate, project_id) VALUES (?, ?, ?, ?)";
+        String sqlComponent = "INSERT INTO components (name, component_type, tax_rate, project_id) VALUES (?, ?::component_type, ?, ?)";
         String sqlMaterial = "INSERT INTO materials (unit_cost, quantity, transport_cost, quality_coefficient, component_id) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -23,7 +23,7 @@ public class MaterialRepositoryImpl implements MaterialRepository {
 
             try (PreparedStatement stmtComponent = connection.prepareStatement(sqlComponent)){
                 stmtComponent.setString(1, material.getName());
-                stmtComponent.setString(2, material.getComponentType().toString());
+                stmtComponent.setObject(2, material.getComponentType().name());
                 stmtComponent.setDouble(3, material.getTaxRate());
                 stmtComponent.setInt(4, material.getProject().getId());
 

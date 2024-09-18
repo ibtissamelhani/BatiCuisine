@@ -4,5 +4,5 @@ import model.entities.Project;
 
 public interface ProjectRepository {
 
-    boolean save(Project project);
+    Project save(Project project);
 }

@@ -16,7 +16,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public boolean save(Project project) {
+    public Project save(Project project) {
         String sql = "INSERT INTO Projects (project_name, profit_margin, total_cost, project_status, surface_area, client_id) VALUES (?, ?, ?, ?::project_status, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, project.getProjectName());
@@ -25,10 +25,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             statement.setObject(4, project.getProjectStatus().name());
             statement.setDouble(5, project.getSurfaceArea());
             statement.setInt(6, project.getClient().getId());
-            return statement.executeUpdate() > 0;
+            statement.executeUpdate() ;
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
         }
+        return project;
     }
 }
