@@ -84,6 +84,9 @@ public class Menu {
                 case "2":
                     clientUI.updateClientUI();
                     break;
+                case "3":
+                    clientUI.deleteClientUI();
+                    break;
                 case "4":
                     clientUI.showAllClients();
                     break;

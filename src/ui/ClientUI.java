@@ -121,6 +121,19 @@ public class ClientUI {
         }
     }
 
+    public void deleteClientUI() {
+        System.out.print("\n Enter client name to delete: ");
+        String name = scanner.nextLine();
+        Optional<Client> existingClient = clientService.getClientByName(name);
+        if (existingClient.isPresent()) {
+            boolean isDeleted = clientService.deleteClient(existingClient.get().getId());
+            if (isDeleted) {
+                System.out.println(RED+ "\n  Client deleted successfully! \n");
+            }else{
+                System.out.println("\n problem while deleting client" + RESET);
+            }
+        }
+    }
 
     public Client searchClientUI() {
         System.out.print("Enter client name: ");

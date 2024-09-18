@@ -34,8 +34,8 @@ public class ClientService {
         return clientRepositoryImpl.findAll();
     }
 
-    public void deleteClient(int id) {
-        clientRepositoryImpl.delete(id);
+    public Boolean deleteClient(int id) {
+        return clientRepositoryImpl.delete(id);
     }
 
     public Client updateClient(Client client) {
