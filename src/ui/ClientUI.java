@@ -39,13 +39,8 @@ public class ClientUI {
         String isProfessionalInput = scanner.nextLine();
         boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
 
-        double discountPercentage = 0.0;
-        if (isProfessional) {
-            System.out.println("enter discount percentage: ");
-            discountPercentage = scanner.nextDouble();
-        }
 
-        Client newClient = clientService.creatClient(name, address, phone, isProfessional, discountPercentage);
+        Client newClient = clientService.creatClient(name, address, phone, isProfessional);
 
         if (newClient != null) {
             System.out.println("\n Client created successfully! \n");
@@ -53,7 +48,6 @@ public class ClientUI {
             System.out.println(GREEN+"- Address: "+RESET + newClient.getAddress());
             System.out.println(GREEN+"- Phone: "+RESET + newClient.getPhone());
             System.out.println(GREEN+"- Professional: "+RESET + (newClient.getProfessional() ? "Yes" : "No"));
-            System.out.println( (newClient.getProfessional() ? GREEN+"- discount Percentage: "+RESET + newClient.getDiscountPercentage() +" %" : ""));
             return newClient;
         } else {
             System.out.println("Failed to create client. The name might already be in use.");
@@ -70,9 +64,7 @@ public class ClientUI {
             Client client = existingClient.get();
             System.out.println("Client found ! ");
             System.out.println(GREEN + "- Name: " + RESET + client.getName()+ GREEN +"- Address: "  + RESET+ client.getAddress()+ GREEN +"- Phone: " + RESET + client.getPhone()+GREEN + "- Professional: " + RESET + (client.getProfessional() ? "Yes" : "No")  );
-            if (client.getProfessional()) {
-                System.out.println(GREEN + "- Discount Percentage: " + RESET + client.getDiscountPercentage() + " %");
-            }
+
 
             System.out.print("Enter new Name (or press Enter to keep the old one): ");
             String newName = scanner.nextLine();
@@ -98,14 +90,6 @@ public class ClientUI {
                 boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
                 client.setProfessional(isProfessional);
 
-                if (isProfessional) {
-                    System.out.print("Enter new discount percentage");
-                    String discountInput = scanner.nextLine();
-                    if (!discountInput.trim().isEmpty()) {
-                        double discountPercentage = Double.parseDouble(discountInput);
-                        client.setDiscountPercentage(discountPercentage);
-                    }
-                }
             }
 
             Client updatedClient = clientService.updateClient(client);
@@ -114,7 +98,6 @@ public class ClientUI {
             System.out.println(BLUE+"- Address: "+RESET + updatedClient.getAddress());
             System.out.println(BLUE+"- Phone: "+RESET + updatedClient.getPhone());
             System.out.println(BLUE+"- Professional: "+RESET + (updatedClient.getProfessional() ? "Yes" : "No"));
-            System.out.println( (updatedClient.getProfessional() ? RED+"- discount Percentage: "+RESET + updatedClient.getDiscountPercentage() +" %" : ""));
 
         } else {
             System.out.println(RED + "Client not found!" + RESET);
@@ -146,7 +129,6 @@ public class ClientUI {
             System.out.println(BLUE+"- Address: "+RESET + client.get().getAddress());
             System.out.println(BLUE+"- Phone: "+RESET + client.get().getPhone());
             System.out.println(BLUE+"- Professional: "+RESET + (client.get().getProfessional() ? "Yes" : "No"));
-            System.out.println( (client.get().getProfessional() ? BLUE+"- discount Percentage: "+RESET + client.get().getDiscountPercentage() +" %" : ""));
             return client.get();
         }else {
             System.out.println("Failed to get client with name " + name);
@@ -158,12 +140,12 @@ public class ClientUI {
         System.out.println(RED+"\t\t\t\t List of All Clients "+RESET);
         List<Client> clients = clientService.getAllClients();
         if (clients != null) {
-            System.out.println("\n+------+------------------+--------------------------+---------------------+------------------+-------------+");
-            System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s | %-10s |\n","ID", "Name", "Address", "Phone", "Professional", "Discount(%)");
-            System.out.println("+------+------------------+--------------------------+---------------------+------------------+-------------+");
+            System.out.println("\n+------+------------------+--------------------------+---------------------+------------------+");
+            System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s |\n","ID", "Name", "Address", "Phone", "Professional");
+            System.out.println("+------+------------------+--------------------------+---------------------+------------------+");
             for (Client client : clients) {
-                System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s |%-12s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional()?"yes":"no", client.getDiscountPercentage());
-                System.out.println("+------+------------------+--------------------------+---------------------+------------------+-------------+");
+                System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional()?"yes":"no");
+                System.out.println("+------+------------------+--------------------------+---------------------+------------------+");
 
             }
         }
