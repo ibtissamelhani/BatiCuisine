@@ -35,18 +35,12 @@ public class ProjectUI {
         double surfaceArea = scanner.nextDouble();
         scanner.nextLine();
 
-        System.out.print("Enter the profit margin (in %): ");
-        double profitMargin = scanner.nextDouble();
-        scanner.nextLine();
 
-        System.out.print("Entrez le coût total du projet : ");
-        double totalCost = scanner.nextDouble();
-        scanner.nextLine();
-
-        Project newProject = new Project(projectName, profitMargin, totalCost, ProjectStatus.IN_PROGRESS, surfaceArea, client);
+        Project newProject = new Project(projectName, 0., 0., ProjectStatus.IN_PROGRESS, surfaceArea, client);
         Project savedProject = projectService.createProject(newProject);
         materialUI.addMaterialUI(savedProject);
         laborUI.addLaborUI(savedProject);
+
 
     }
 }
