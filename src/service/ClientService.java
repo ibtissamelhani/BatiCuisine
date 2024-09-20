@@ -30,6 +30,10 @@ public class ClientService {
         return clientRepositoryImpl.findByName(name);
     }
 
+    public Optional<Client> getClientById(int id) {
+        return clientRepositoryImpl.findById(id);
+    }
+
     public List<Client> getAllClients() {
         return clientRepositoryImpl.findAll();
     }

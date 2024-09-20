@@ -20,12 +20,16 @@ public class ClientRepositoryImpl implements ClientRepository {
     public Client save(Client client) {
         String sql = "INSERT INTO clients (name, address, phone, is_professional) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, client.getName());
             stmt.setString(2, client.getAddress());
             stmt.setString(3, client.getPhone());
             stmt.setBoolean(4, client.getProfessional());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                client.setId(rs.getInt(1));
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

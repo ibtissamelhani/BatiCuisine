@@ -21,10 +21,12 @@ public class MaterialUI {
         this.scanner =  new Scanner(System.in);
     }
 
-    public void addMaterialUI(Project project) {
+    public Double addMaterialUI(Project project) {
 
-        System.out.println(BLEU+"\n---------------------------------------     Add Material   ------------------------------------------\n"+RESET);
+        double totalMaterialCost = 0.0;
+        System.out.println(BLEU+"\n---------------------------------------     Add Materials   ------------------------------------------\n"+RESET);
 
+        do{
         System.out.print("Enter material name: ");
         String name = scanner.nextLine();
 
@@ -53,17 +55,17 @@ public class MaterialUI {
         boolean success = materialService.addMaterial(material);
 
         if (success) {
+            double materialCost = material.calculateTotalCost();
+            totalMaterialCost += materialCost;
             System.out.println(GREEN+"Material added successfully!"+RESET);
         } else {
             System.out.println("Failed to add material.");
         }
 
-        System.out.print("\nWould you like to add another material? (y/n): ");
-        String choice = scanner.nextLine();
+        System.out.print("\n Would you like to add another material? (y/n): ");
+        }while (scanner.nextLine().equalsIgnoreCase("y"));
 
-        if (choice.equalsIgnoreCase("y")) {
-            addMaterialUI(project);
-        }
+        return totalMaterialCost;
     }
 
 }

@@ -20,11 +20,11 @@ public class Menu {
 
     private MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
     private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
-    private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(connection);
+    private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
     private LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
 
     private ClientService clientService = new ClientService(clientRepository);
-    private ProjectService projectService = new ProjectService(projectRepository);
+    private ProjectService projectService = new ProjectService(projectRepository,clientService);
     private MaterialService materialService = new MaterialService(materialRepository);
     private LaborService laborService = new LaborService(laborRepository);
 

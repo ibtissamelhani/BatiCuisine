@@ -1,7 +1,6 @@
 package ui;
 
 import model.entities.Client;
-import model.entities.Material;
 import model.entities.Project;
 import model.enums.ProjectStatus;
 import service.ProjectService;
@@ -27,7 +26,7 @@ public class ProjectUI {
 
     public void createProjectForClient(Client client) {
 
-        System.out.println(BLUE+"\n--------------------------------------- Creating a New Project ------------------------------------------\n"+RESET);
+        System.out.println(BLUE + "\n--------------------------------------- Creating a New Project ------------------------------------------\n" + RESET);
         System.out.print("Enter project name: : ");
         String projectName = scanner.nextLine();
 
@@ -38,9 +37,24 @@ public class ProjectUI {
 
         Project newProject = new Project(projectName, 0., 0., ProjectStatus.IN_PROGRESS, surfaceArea, client);
         Project savedProject = projectService.createProject(newProject);
-        materialUI.addMaterialUI(savedProject);
-        laborUI.addLaborUI(savedProject);
-
-
+        Double  totalMaterialCost= materialUI.addMaterialUI(savedProject);
+        Double  totalLaborCost= laborUI.addLaborUI(savedProject);
+        calculateTotalCost(savedProject, totalMaterialCost, totalLaborCost);
     }
+
+    public void calculateTotalCost(Project project, Double materialCost, Double laborCost) {
+        System.out.println(YELLOW+"\n--------------------------------------- Total Cost Calculation ------------------------------------------\n"+RESET);
+
+        System.out.print("Would you like to apply a profit margin to the project? (y/n): ");
+        String applyMargin = scanner.nextLine();
+
+        double profitMarginPercentage = 0.0;
+        if (applyMargin.equalsIgnoreCase("y")) {
+            System.out.print("Enter the profit margin percentage (%): ");
+            profitMarginPercentage = scanner.nextDouble();
+            scanner.nextLine();
+        }
+        projectService.calculateCost(project.getId(), materialCost, laborCost, profitMarginPercentage);
+    }
+
 }
