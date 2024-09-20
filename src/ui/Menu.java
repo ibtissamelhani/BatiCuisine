@@ -24,14 +24,14 @@ public class Menu {
     private LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
 
     private ClientService clientService = new ClientService(clientRepository);
-    private ProjectService projectService = new ProjectService(projectRepository,clientService);
+    private ProjectService projectService = new ProjectService(projectRepository);
     private MaterialService materialService = new MaterialService(materialRepository);
     private LaborService laborService = new LaborService(laborRepository);
 
     private MaterialUI materialUI = new MaterialUI(materialService);
     private LaborUI laborUI = new LaborUI(laborService);
     private ClientUI clientUI = new ClientUI(clientService);
-    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI);
+    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;
