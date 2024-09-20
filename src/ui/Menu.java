@@ -20,7 +20,7 @@ public class Menu {
 
     private MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
     private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
-    private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(connection);
+    private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
     private LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
 
     private ClientService clientService = new ClientService(clientRepository);
@@ -31,7 +31,7 @@ public class Menu {
     private MaterialUI materialUI = new MaterialUI(materialService);
     private LaborUI laborUI = new LaborUI(laborService);
     private ClientUI clientUI = new ClientUI(clientService);
-    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI);
+    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;

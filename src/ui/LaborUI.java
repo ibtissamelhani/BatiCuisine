@@ -22,11 +22,13 @@ public class LaborUI {
     }
 
 
-    public void addLaborUI(Project project) {
-        Scanner scanner = new Scanner(System.in);
+    public Double addLaborUI(Project project) {
 
-        System.out.println(BLEU+"\n---------------------------------------     Add Labor    ------------------------------------------\n"+RESET);
+        double totalLaborCost = 0.0;
 
+        System.out.println(BLEU+"\n---------------------------------------     Add Labors    ------------------------------------------\n"+RESET);
+
+        do {
         System.out.print("Enter the type of labor (e.g., General Worker, Specialist): ");
         String name = scanner.nextLine();
 
@@ -43,15 +45,19 @@ public class LaborUI {
         Labor labor = new Labor(name,ComponentType.LABOR,0.20,hourlyRate,workHours,workerProductivity,project);
 
 
-        laborService.addLabor(labor);
+        Boolean success = laborService.addLabor(labor);
+            if (success) {
+                double laborCost = labor.calculateTotalCost();
+                totalLaborCost += laborCost;
+                System.out.println(GREEN + "Labor added successfully! Cost of this labor: " + laborCost + "€" + RESET);
+            } else {
+                System.out.println("Failed to add labor.");
+            }
 
-        System.out.println(GREEN+"\nLabor added successfully!"+RESET);
 
         System.out.print("Would you like to add another labor? (y/n): ");
-        String response = scanner.nextLine();
+        }while (scanner.nextLine().equalsIgnoreCase("y"));
 
-        if (response.equalsIgnoreCase("y")) {
-            addLaborUI(project);
-        }
+        return totalLaborCost;
     }
 }

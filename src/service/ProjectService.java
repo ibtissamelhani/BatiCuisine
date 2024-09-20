@@ -3,6 +3,8 @@ package service;
 import model.entities.Project;
 import repository.ProjectRepositoryImpl;
 
+import java.util.Optional;
+
 public class ProjectService {
 
     private ProjectRepositoryImpl projectRepository;
@@ -14,4 +16,24 @@ public class ProjectService {
     public Project createProject(Project project) {
         return projectRepository.save(project);
     }
+
+    public void addCalculatedCostToProject(Project project , double totalCost,double profitMargin) {
+
+        Optional<Project> opProject = projectRepository.findById(project.getId());
+
+        if (!opProject.isPresent()) {
+            System.err.println("Project not found");
+            return;
+        }
+
+        boolean success = projectRepository.updateTotalCost(opProject.get());
+        if (success) {
+            System.out.println("Project updated");
+        }else {
+            System.out.println("Project not updated");
+        }
+
+    }
+
+
 }
