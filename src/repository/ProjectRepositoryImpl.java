@@ -64,4 +64,21 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public  Boolean updateTotalCost(Project project) {
+        String query = "update projects set total_cost = ?, profit_margin = ? where id = ?";
+        boolean isUpdated = false;
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setDouble(1, project.getTotalCost());
+            stmt.setDouble(2, project.getProfitMargin());
+            stmt.setInt(3, project.getId());
+            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            isUpdated = rowsAffected > 0;
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return isUpdated;
+    }
 }

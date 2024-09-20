@@ -99,7 +99,9 @@ public class ProjectUI {
 
         }
 
-        projectService.addCalculatedCostToProject(project.getId(), totalCost, profitMarginPercentage);
+        project.setProfitMargin(profitMarginPercentage);
+        project.setTotalCost(totalCost);
+        projectService.addCalculatedCostToProject(project, totalCost, profitMarginPercentage);
     }
 
 }

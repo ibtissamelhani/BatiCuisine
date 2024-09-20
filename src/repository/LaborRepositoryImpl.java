@@ -15,14 +15,14 @@ public class LaborRepositoryImpl implements LaborRepository {
 
     @Override
     public void save(Labor labor) {
-        String sqlComponent = "INSERT INTO components (name, component_type, tax_rate, project_id) VALUES (?, ?::component_type, ?, ?) RETURNING id";
+        String sqlComponent = "INSERT INTO components (name, component_type, tax_rate, project_id) VALUES (?, ?::component_type, ?, ?)";
         String sqlLabor = "INSERT INTO labors (hourly_rate, work_hours, worker_productivity, component_id) VALUES (?, ?, ?, ?)";
 
         try {
             connection.setAutoCommit(false);
 
             int componentId = 0;
-            try (PreparedStatement stmtComponent = connection.prepareStatement(sqlComponent)) {
+            try (PreparedStatement stmtComponent = connection.prepareStatement(sqlComponent, Statement.RETURN_GENERATED_KEYS)) {
                 stmtComponent.setString(1, labor.getName());
                 stmtComponent.setObject(2, labor.getComponentType().name());
                 stmtComponent.setDouble(3, labor.getTaxRate());
