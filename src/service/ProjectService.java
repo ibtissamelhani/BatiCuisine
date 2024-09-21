@@ -26,6 +26,9 @@ public class ProjectService {
             return;
         }
 
+        opProject.get().setProfitMargin(profitMargin);
+        opProject.get().setTotalCost(totalCost);
+
         boolean success = projectRepository.updateTotalCost(opProject.get());
         if (success) {
             System.out.println("Project updated");

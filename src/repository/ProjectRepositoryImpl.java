@@ -73,7 +73,6 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             stmt.setDouble(1, project.getTotalCost());
             stmt.setDouble(2, project.getProfitMargin());
             stmt.setInt(3, project.getId());
-            stmt.executeUpdate();
             int rowsAffected = stmt.executeUpdate();
             isUpdated = rowsAffected > 0;
         }catch (SQLException e) {
