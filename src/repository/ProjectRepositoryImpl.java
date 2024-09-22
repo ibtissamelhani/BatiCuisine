@@ -2,6 +2,7 @@ package repository;
 
 import model.entities.Client;
 import model.entities.Project;
+import model.enums.ProjectStatus;
 import repository.interfaces.ClientRepository;
 import repository.interfaces.ProjectRepository;
 
@@ -57,6 +58,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
                 project.setProfitMargin(rs.getDouble("profit_margin"));
                 project.setTotalCost(rs.getDouble("total_cost"));
                 project.setSurfaceArea(rs.getDouble("surface_area"));
+                project.setProjectStatus(ProjectStatus.valueOf(rs.getString("project_status")));
                 project.setClient(clientRepository.findById(rs.getInt("client_id")).get());
                 return Optional.of(project);
             }
@@ -86,6 +88,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
                     project.setProfitMargin(rs.getDouble("profit_margin"));
                     project.setTotalCost(rs.getDouble("total_cost"));
                     project.setSurfaceArea(rs.getDouble("surface_area"));
+                    project.setProjectStatus(ProjectStatus.valueOf(rs.getString("project_status")));
                     project.setClient(clientRepository.findById(rs.getInt("client_id")).get());
                     return Optional.of(project);
                 }
@@ -98,13 +101,17 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public  Boolean updateTotalCost(Project project) {
-        String query = "update projects set total_cost = ?, profit_margin = ? where id = ?";
+    public  Boolean update(Project project) {
+        String query = "UPDATE Projects SET project_name = ?, profit_margin = ?, total_cost = ?, project_status = ?::project_status, surface_area = ?, client_id = ? WHERE id = ?";
         boolean isUpdated = false;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setDouble(1, project.getTotalCost());
+            stmt.setString(1, project.getProjectName());
             stmt.setDouble(2, project.getProfitMargin());
-            stmt.setInt(3, project.getId());
+            stmt.setDouble(3, project.getTotalCost());
+            stmt.setObject(4, project.getProjectStatus().name());
+            stmt.setDouble(5, project.getSurfaceArea());
+            stmt.setInt(6, project.getClient().getId());
+            stmt.setInt(7, project.getId());
             int rowsAffected = stmt.executeUpdate();
             isUpdated = rowsAffected > 0;
         }catch (SQLException e) {
