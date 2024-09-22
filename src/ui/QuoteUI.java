@@ -2,19 +2,23 @@ package ui;
 
 import model.entities.Project;
 import model.entities.Quote;
+import service.ProjectService;
 import service.QuoteService;
 import utils.DateFormat;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class QuoteUI {
 
     private QuoteService quoteService;
+    private ProjectService projectService;
     private Scanner scanner;
 
-    public QuoteUI(QuoteService quoteService) {
+    public QuoteUI(QuoteService quoteService, ProjectService projectService) {
         this.quoteService = quoteService;
+        this.projectService = projectService;
         this.scanner = new Scanner(System.in);
     }
 
@@ -64,4 +68,53 @@ public class QuoteUI {
         }
     }
 
+   public void deleteQuoteUI() {
+        Quote quote = showQuoteUI();
+        if (quote != null) {
+            boolean success = quoteService.delete(quote.getId());
+            if (success) {
+                System.out.println("Quote deleted successfully!");
+            }
+        }
+   }
+
+    public Quote showQuoteUI() {
+        System.out.print("Enter the client name: ");
+        String client_name ;
+        try {
+            client_name = scanner.nextLine();
+        }catch (Exception e){
+            System.err.println("\033[0;31mInvalid client name\033[0m");
+            return null;
+        }
+
+        System.out.print("Enter the project name: ");
+        String project_name ;
+        try {
+            project_name = scanner.nextLine();
+        }catch (Exception e){
+            System.err.println("\033[0;31mInvalid project name\033[0m");
+            return null;
+        }
+
+        Optional<Project> optionalProject = projectService.findByNameAndClientName(project_name,client_name);
+        if (!optionalProject.isPresent()){
+            System.err.println("\033[0;31mProject not found\033[0m");
+            return null;
+        }
+        Project project = optionalProject.get();
+
+        Optional<Quote> OpQuote = quoteService.getQuoteByProjectId(project.getId());
+
+        if (!OpQuote.isPresent()) {
+            System.err.println("\033[0;31mQuote not found\033[0m");
+            return null;
+        }
+        Quote quote = OpQuote.get();
+        System.out.println("estimation amount : "+ quote.getEstimatedAmount());
+        System.out.println("Issue date : "+ quote.getIssueDate());
+        System.out.println("Validity date : "+ quote.getValidityDate());
+        System.out.println("is quote accepted : "+(quote.getAccepted()?"yes":"no"));
+        return quote;
+    }
 }

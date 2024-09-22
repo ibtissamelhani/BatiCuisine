@@ -1,19 +1,20 @@
 package repository;
 
+import model.entities.Project;
 import model.entities.Quote;
 import repository.interfaces.QuoteRepository;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Optional;
 
 public class QuoteRepositoryImpl implements QuoteRepository {
 
     private Connection connection;
+    private ProjectRepositoryImpl projectRepository;
 
-    public QuoteRepositoryImpl(Connection connection) {
+    public QuoteRepositoryImpl(Connection connection, ProjectRepositoryImpl projectRepository) {
         this.connection = connection;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -32,4 +33,73 @@ public class QuoteRepositoryImpl implements QuoteRepository {
                 return false;
             }
     }
+
+    @Override
+    public Optional<Quote> findByProjectId(int projectId) {
+        String query = "SELECT id, estimated_amount, validity_date, issue_date, is_accepted, project_id FROM quotes WHERE project_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, projectId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // Build the Quote object from the result set
+                Quote quote = new Quote();
+                quote.setId(rs.getInt("id"));
+                quote.setEstimatedAmount(rs.getDouble("estimated_amount"));
+                quote.setValidityDate(rs.getDate("validity_date").toLocalDate());
+                quote.setIssueDate(rs.getDate("issue_date").toLocalDate());
+                quote.setAccepted(rs.getBoolean("is_accepted"));
+
+                // Assuming you have a method to get a Project by its ID
+                Optional<Project> project = projectRepository.findById(rs.getInt("project_id"));
+                quote.setProject(project.get());
+
+                return Optional.of(quote);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching quote by projectId: " + e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean delete(int id) {
+        String query = "DELETE FROM quotes WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error while deleting quote: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean update(Quote quote) {
+        String query = "UPDATE quotes SET estimated_amount = ?, validity_date = ?, issue_date = ?, is_accepted = ? WHERE project_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Set the parameters for the update query
+            stmt.setDouble(1, quote.getEstimatedAmount());
+            stmt.setDate(2, Date.valueOf(quote.getValidityDate()));
+            stmt.setDate(3, Date.valueOf(quote.getIssueDate()));
+            stmt.setBoolean(4, quote.getAccepted());
+            stmt.setInt(5, quote.getProject().getId());
+
+            // Execute the update and check if it was successful
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;  // Return true if at least one row was updated
+
+        } catch (SQLException e) {
+            System.err.println("Error while updating quote: " + e.getMessage());
+            return false;
+        }
+    }
+
+
 }
