@@ -1,5 +1,6 @@
 package ui;
 
+import model.entities.Client;
 import model.entities.Project;
 import model.entities.Quote;
 import service.ProjectService;
@@ -7,6 +8,7 @@ import service.QuoteService;
 import utils.DateFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -63,7 +65,7 @@ public class QuoteUI {
         }
     }
 
-   public void deleteQuoteUI() {
+    public void deleteQuoteUI() {
        System.out.println("deleting quote");
         Quote quote = showQuoteUI();
         if (quote != null) {
@@ -74,7 +76,7 @@ public class QuoteUI {
         }
    }
 
-   public void updateQuoteUI() {
+    public void updateQuoteUI() {
        System.out.println("updating quote");
         Quote quote = showQuoteUI();
         if (quote != null) {
@@ -165,4 +167,35 @@ public class QuoteUI {
         System.out.println("is quote accepted : "+(quote.getAccepted()?"yes":"no"));
         return quote;
     }
+
+    public void displayAllQuotes() {
+        List<Quote> quotes = quoteService.getAllQuotes();
+
+        if (quotes.isEmpty()) {
+            System.out.println("No quotes available.");
+            return;
+        }
+
+        // Table Header
+        System.out.printf("%-20s %-25s %-25s %-15s %-10s%n",
+                "Client Name", "Project Name", "Estimated Amount", "Issue Date", "Validity Date", "Accepted");
+
+        System.out.println(new String(new char[100]).replace("\0", "-"));
+
+        // Table Rows
+        for (Quote quote : quotes) {
+            Project project = quote.getProject();
+            Client client = project.getClient();
+
+            System.out.printf("%-20s %-25s %-25s %-15s %-10s%n",
+                    client.getName(),
+                    project.getProjectName(),
+                    String.format("%.2f €", quote.getEstimatedAmount()),
+                    quote.getIssueDate(),
+                    quote.getValidityDate(),
+                    quote.getAccepted() ? "Yes" : "No");
+        }
+    }
+
+
 }

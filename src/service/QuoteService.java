@@ -3,6 +3,7 @@ package service;
 import model.entities.Quote;
 import repository.QuoteRepositoryImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 public class QuoteService {
@@ -27,5 +28,9 @@ public class QuoteService {
 
     public boolean update(Quote quote) {
         return quoteRepository.update(quote);
+    }
+
+    public List<Quote> getAllQuotes() {
+        return quoteRepository.findAll();
     }
 }
