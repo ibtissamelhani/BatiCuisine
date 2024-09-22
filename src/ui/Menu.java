@@ -162,9 +162,9 @@ public class Menu {
             System.out.println("\n********************************************************************************");
             System.out.println("*                                  Quote Management                            *");
             System.out.println("********************************************************************************");
-            System.out.println("*  1. Update a quote                                                           *");
-            System.out.println("*  2. Delete a quote                                                           *");
-            System.out.println("*  3. Show quote                                                               *");
+            System.out.println("*  1. Update a Quote                                                           *");
+            System.out.println("*  2. Delete a Quote                                                           *");
+            System.out.println("*  3. Show all Quotes                                                          *");
             System.out.println("*  4. Return to Main Menu                                                      *");
             System.out.println("*  5. Exit                                                                     *");
             System.out.println("********************************************************************************\n");
@@ -180,7 +180,7 @@ public class Menu {
                     quoteUI.deleteQuoteUI();
                     break;
                 case "3":
-                    quoteUI.showQuoteUI();
+                    quoteUI.displayAllQuotes();
                     break;
                 case "4":
                     quit = true;
