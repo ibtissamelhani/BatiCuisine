@@ -2,33 +2,36 @@ package ui;
 
 import database.DataBaseConnection;
 import model.entities.Client;
-import repository.*;
-import service.*;
+import repository.ClientRepositoryImpl;
+import repository.LaborRepositoryImpl;
+import repository.MaterialRepositoryImpl;
+import repository.ProjectRepositoryImpl;
+import service.ClientService;
+import service.LaborService;
+import service.MaterialService;
+import service.ProjectService;
 
 import java.sql.Connection;
 import java.util.Scanner;
 
 public class Menu {
 
-    private Connection connection =  DataBaseConnection.getInstance().getConnection();
+    private final Connection connection =  DataBaseConnection.getInstance().getConnection();
 
-    private MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
-    private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
-    private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
-    private LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
-    private QuoteRepositoryImpl quoteRepository = new QuoteRepositoryImpl(connection);
+    private final MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
+    private final ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
+    private final ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
+    private final LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
 
-    private ClientService clientService = new ClientService(clientRepository);
-    private ProjectService projectService = new ProjectService(projectRepository);
-    private MaterialService materialService = new MaterialService(materialRepository);
-    private LaborService laborService = new LaborService(laborRepository);
-    private QuoteService quoteService = new QuoteService(quoteRepository);
+    private final ClientService clientService = new ClientService(clientRepository);
+    private final ProjectService projectService = new ProjectService(projectRepository);
+    private final MaterialService materialService = new MaterialService(materialRepository);
+    private final LaborService laborService = new LaborService(laborRepository);
 
-    private MaterialUI materialUI = new MaterialUI(materialService);
-    private LaborUI laborUI = new LaborUI(laborService);
-    private ClientUI clientUI = new ClientUI(clientService);
-    private QuoteUI quoteUI = new QuoteUI(quoteService);
-    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService,quoteUI);
+    private final MaterialUI materialUI = new MaterialUI(materialService);
+    private final LaborUI laborUI = new LaborUI(laborService);
+    private final ClientUI clientUI = new ClientUI(clientService);
+    private final ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;
