@@ -4,5 +4,5 @@ import model.entities.Quote;
 
 public interface QuoteRepository {
 
-    Quote save(Quote quote);
+    Boolean save(Quote quote);
 }
