@@ -33,7 +33,7 @@ public class ProjectUI {
     public void createProjectForClient(Client client) {
 
         System.out.println(BLUE + "\n--------------------------------------- Creating a New Project ------------------------------------------\n" + RESET);
-        System.out.print("Enter project name: : ");
+        System.out.print("Enter project name: ");
         String projectName = scanner.nextLine();
 
         System.out.print("Enter the project area (in m²): ");
@@ -106,13 +106,7 @@ public class ProjectUI {
 
         boolean success = projectService.addCalculatedCostToProject(project,totalCost,profitMarginPercentage);
         if (success) {
-            System.out.print("Would you like to generate a quote now? (y/n): ");
-            String generateQuote = scanner.nextLine();
-            if (generateQuote.equalsIgnoreCase("y")) {
-                quoteUI.createQuoteUI(project);
-            } else {
-                System.out.println("Quote generation canceled.");
-            }
+            quoteUI.createQuoteUI(project);
         }
 
 

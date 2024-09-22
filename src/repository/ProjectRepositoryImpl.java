@@ -75,7 +75,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             stmt.setInt(3, project.getId());
             int rowsAffected = stmt.executeUpdate();
             isUpdated = rowsAffected > 0;
-            connection.commit();
+//            connection.commit();
         }catch (SQLException e) {
             System.out.println(e.getMessage());
         }

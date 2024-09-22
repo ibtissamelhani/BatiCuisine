@@ -2,14 +2,8 @@ package ui;
 
 import database.DataBaseConnection;
 import model.entities.Client;
-import repository.ClientRepositoryImpl;
-import repository.LaborRepositoryImpl;
-import repository.MaterialRepositoryImpl;
-import repository.ProjectRepositoryImpl;
-import service.ClientService;
-import service.LaborService;
-import service.MaterialService;
-import service.ProjectService;
+import repository.*;
+import service.*;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -22,16 +16,19 @@ public class Menu {
     private final ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
     private final ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
     private final LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
+    private final QuoteRepositoryImpl quoteRepository = new QuoteRepositoryImpl(connection);
 
     private final ClientService clientService = new ClientService(clientRepository);
     private final ProjectService projectService = new ProjectService(projectRepository);
     private final MaterialService materialService = new MaterialService(materialRepository);
     private final LaborService laborService = new LaborService(laborRepository);
+    private final QuoteService quoteService = new QuoteService(quoteRepository);
 
     private final MaterialUI materialUI = new MaterialUI(materialService);
     private final LaborUI laborUI = new LaborUI(laborService);
     private final ClientUI clientUI = new ClientUI(clientService);
-    private final ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService);
+    private final QuoteUI quoteUI = new QuoteUI(quoteService);
+    private final ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService,quoteUI);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;
@@ -39,6 +36,8 @@ public class Menu {
     final String YELLOW = "\u001B[33m";
     final String BLUE = "\u001B[34m";
     final String RESET = "\u001B[0m";
+    final String RED = "\033[0;31m";
+
 
     public void start(){
 
@@ -49,7 +48,7 @@ public class Menu {
             System.out.println("********************************************************************************");
             System.out.println("*  1. Client Management                                                        *");
             System.out.println("*  2. Project Management                                                       *");
-            System.out.println("*  3. Calculate the cost of a project                                          *");
+            System.out.println("*  3. Quote Management                                                         *");
             System.out.println("*  4. Exit                                                                     *");
             System.out.println("********************************************************************************\n");
 
@@ -157,6 +156,47 @@ public class Menu {
         }
     }
 
+    public void quoteMenu() {
+        while(!quit) {
+            System.out.println(RED+"\n********************************************************************************");
+            System.out.println("*                                  Quote Management                            *");
+            System.out.println("********************************************************************************");
+            System.out.println("*  1. create a quote                                                          *");
+            System.out.println("*  2. Update a quote                                                          *");
+            System.out.println("*  3. Delete a quote                                                          *");
+            System.out.println("*  4. Show all quotes                                                         *");
+            System.out.println("*  5. Return to Main Menu                                                      *");
+            System.out.println("*  6. Exit                                                                     *");
+            System.out.println("********************************************************************************\n" + RESET);
 
+            System.out.print("enter your choice: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    ;
+                    break;
+                case "2":
+                    clientUI.updateClientUI();
+                    break;
+                case "3":
+                    clientUI.deleteClientUI();
+                    break;
+                case "4":
+                    clientUI.showAllClients();
+                    break;
+                case "5":
+                    quit = true;
+                    System.out.println("return to principal menu");
+                    break;
+                case "6":
+                    System.out.println("exit");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice");
+            }
+
+        }
+    }
 
 }
