@@ -40,5 +40,7 @@ public class ProjectService {
 
     }
 
-
+    public Optional<Project> findByNameAndClientName(String projectName, String clientName){
+        return projectRepository.findByNameAndClient(projectName, clientName);
+    }
 }

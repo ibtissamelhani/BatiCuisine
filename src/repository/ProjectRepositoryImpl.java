@@ -1,5 +1,6 @@
 package repository;
 
+import model.entities.Client;
 import model.entities.Project;
 import repository.interfaces.ClientRepository;
 import repository.interfaces.ProjectRepository;
@@ -9,9 +10,9 @@ import java.util.Optional;
 
 public class ProjectRepositoryImpl implements ProjectRepository {
 
-    private ClientRepository clientRepository;
+    private ClientRepositoryImpl clientRepository;
     Connection connection;
-    public ProjectRepositoryImpl(ClientRepository clientRepository, Connection connection) {
+    public ProjectRepositoryImpl(ClientRepositoryImpl clientRepository, Connection connection) {
         this.connection = connection;
         this.clientRepository = clientRepository;
     }
@@ -66,6 +67,37 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
+    public Optional<Project> findByNameAndClient(String projectName, String clientName) {
+        Optional<Client> client = clientRepository.findByName(clientName);
+        if (!client.isPresent()) {
+            return Optional.empty();
+        }
+        int client_id = client.get().getId();
+
+        String query = "SELECT * FROM Projects WHERE project_name = ? AND client_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, projectName);
+            ps.setInt(2, client_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Project project = new Project();
+                    project.setId(rs.getInt("id"));
+                    project.setProjectName(rs.getString("project_name"));
+                    project.setProfitMargin(rs.getDouble("profit_margin"));
+                    project.setTotalCost(rs.getDouble("total_cost"));
+                    project.setSurfaceArea(rs.getDouble("surface_area"));
+                    project.setClient(clientRepository.findById(rs.getInt("client_id")).get());
+                    return Optional.of(project);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+
+    }
+
+    @Override
     public  Boolean updateTotalCost(Project project) {
         String query = "update projects set total_cost = ?, profit_margin = ? where id = ?";
         boolean isUpdated = false;
@@ -75,7 +107,6 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             stmt.setInt(3, project.getId());
             int rowsAffected = stmt.executeUpdate();
             isUpdated = rowsAffected > 0;
-//            connection.commit();
         }catch (SQLException e) {
             System.out.println(e.getMessage());
         }
