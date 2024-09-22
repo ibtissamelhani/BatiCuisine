@@ -14,11 +14,12 @@ public class Quote {
     public Quote() {
     }
 
-    public Quote(Double estimatedAmount, LocalDate validityDate, LocalDate issueDate, Boolean isAccepted) {
+    public Quote(Double estimatedAmount, LocalDate validityDate, LocalDate issueDate, Boolean isAccepted, Project project) {
         this.estimatedAmount = estimatedAmount;
         this.validityDate = validityDate;
         this.issueDate = issueDate;
         this.isAccepted = isAccepted;
+        this.project = project;
     }
 
     public int getId() {

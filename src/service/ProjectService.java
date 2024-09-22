@@ -17,13 +17,13 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public void addCalculatedCostToProject(Project project , double totalCost,double profitMargin) {
+    public Boolean addCalculatedCostToProject(Project project, double totalCost, double profitMargin) {
 
         Optional<Project> opProject = projectRepository.findById(project.getId());
 
         if (!opProject.isPresent()) {
             System.err.println("Project not found");
-            return;
+            return false;
         }
 
         opProject.get().setProfitMargin(profitMargin);
@@ -32,8 +32,10 @@ public class ProjectService {
         boolean success = projectRepository.updateTotalCost(opProject.get());
         if (success) {
             System.out.println("Project updated");
+            return true;
         }else {
             System.out.println("Project not updated");
+            return false;
         }
 
     }

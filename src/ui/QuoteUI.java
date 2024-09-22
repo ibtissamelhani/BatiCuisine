@@ -19,7 +19,7 @@ public class QuoteUI {
     }
 
     public void createQuoteUI(Project project) {
-        System.out.println("--- Quote Registration ---");
+        System.out.println("------------------------------------------- Quote Registration -------------------------");
 
         double totalCost = project.getTotalCost();
 
@@ -42,16 +42,13 @@ public class QuoteUI {
         }
 
 
-        System.out.print("Is the quote accepted? (y/n): ");
-        boolean isAccepted = scanner.nextLine().equalsIgnoreCase("y");
-
         // Create the quote
-        Quote newQuote = new Quote();
-        newQuote.setEstimatedAmount(totalCost);
-        newQuote.setIssueDate(issueDate);
-        newQuote.setValidityDate(validityDate);
-        newQuote.setAccepted(isAccepted);
-        newQuote.setProject(project);
+        Quote newQuote = new Quote(totalCost,validityDate,issueDate,false,project);
+//        newQuote.setEstimatedAmount(totalCost);
+//        newQuote.setIssueDate(issueDate);
+//        newQuote.setValidityDate(validityDate);
+//        newQuote.setAccepted(false);
+//        newQuote.setProject(project);
 
         System.out.print("Do you wish to save the quote? (y/n):");
         String choice = scanner.nextLine();

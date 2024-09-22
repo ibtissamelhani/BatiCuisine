@@ -56,6 +56,13 @@ public class MaterialRepositoryImpl implements MaterialRepository {
                 System.out.println("Error rolling back transaction: " + rollbackEx.getMessage());
             }
             System.out.println(e.getMessage());
+        } finally {
+            // Always reset auto-commit mode to true
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                System.out.println("Error resetting auto-commit: " + e.getMessage());
+            }
         }
     }
 }
