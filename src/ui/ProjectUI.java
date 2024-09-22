@@ -15,16 +15,18 @@ public class ProjectUI {
     private ClientService clientService;
     private MaterialUI materialUI;
     private LaborUI laborUI;
+    private QuoteUI quoteUI;
     private Scanner scanner;
     final String YELLOW = "\u001B[33m";
     final String BLUE = "\u001B[34m";
     final String RESET = "\u001B[0m";
 
-    public ProjectUI(ProjectService projectService,MaterialUI materialUI, LaborUI laborUI,ClientService clientService) {
+    public ProjectUI(ProjectService projectService,MaterialUI materialUI, LaborUI laborUI,ClientService clientService,QuoteUI quoteUI) {
         this.projectService = projectService;
         this.clientService = clientService;
         this.materialUI = materialUI;
         this.laborUI = laborUI;
+        this.quoteUI= quoteUI;
         this.scanner = new Scanner(System.in);
     }
 
@@ -101,7 +103,19 @@ public class ProjectUI {
 
         project.setProfitMargin(profitMarginPercentage);
         project.setTotalCost(totalCost);
-        projectService.addCalculatedCostToProject(project, totalCost, profitMarginPercentage);
+
+        boolean success = projectService.addCalculatedCostToProject(project,totalCost,profitMarginPercentage);
+        if (success) {
+            System.out.print("Would you like to generate a quote now? (y/n): ");
+            String generateQuote = scanner.nextLine();
+            if (generateQuote.equalsIgnoreCase("y")) {
+                quoteUI.createQuoteUI(project);
+            } else {
+                System.out.println("Quote generation canceled.");
+            }
+        }
+
+
     }
 
 }

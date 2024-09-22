@@ -2,14 +2,8 @@ package ui;
 
 import database.DataBaseConnection;
 import model.entities.Client;
-import repository.ClientRepositoryImpl;
-import repository.LaborRepositoryImpl;
-import repository.MaterialRepositoryImpl;
-import repository.ProjectRepositoryImpl;
-import service.ClientService;
-import service.LaborService;
-import service.MaterialService;
-import service.ProjectService;
+import repository.*;
+import service.*;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -22,16 +16,19 @@ public class Menu {
     private ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
     private ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
     private LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
+    private QuoteRepositoryImpl quoteRepository = new QuoteRepositoryImpl(connection);
 
     private ClientService clientService = new ClientService(clientRepository);
     private ProjectService projectService = new ProjectService(projectRepository);
     private MaterialService materialService = new MaterialService(materialRepository);
     private LaborService laborService = new LaborService(laborRepository);
+    private QuoteService quoteService = new QuoteService(quoteRepository);
 
     private MaterialUI materialUI = new MaterialUI(materialService);
     private LaborUI laborUI = new LaborUI(laborService);
     private ClientUI clientUI = new ClientUI(clientService);
-    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService);
+    private QuoteUI quoteUI = new QuoteUI(quoteService);
+    private ProjectUI projectUI = new ProjectUI(projectService,materialUI,laborUI,clientService,quoteUI);
 
     private final Scanner scanner = new Scanner(System.in);
     private boolean quit = false;

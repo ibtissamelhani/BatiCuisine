@@ -42,15 +42,12 @@ public class QuoteUI {
         }
 
 
-        System.out.print("Is the quote accepted? (y/n): ");
-        boolean isAccepted = scanner.nextLine().equalsIgnoreCase("y");
-
         // Create the quote
         Quote newQuote = new Quote();
         newQuote.setEstimatedAmount(totalCost);
         newQuote.setIssueDate(issueDate);
         newQuote.setValidityDate(validityDate);
-        newQuote.setAccepted(isAccepted);
+        newQuote.setAccepted(false);
         newQuote.setProject(project);
 
         System.out.print("Do you wish to save the quote? (y/n):");
