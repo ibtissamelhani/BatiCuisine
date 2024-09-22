@@ -11,10 +11,13 @@ public class LaborUI {
 
     private LaborService laborService;
     private Scanner scanner;
-    final String YELLOW = "\u001B[33m";
-    final String BLEU = "\u001B[94m";
+
+    final String PURPLE = "\033[0;35m";
     final String GREEN = "\u001B[92m";
     final String RESET = "\u001B[0m";
+    final String RED = "\033[0;31m";
+
+
 
     public LaborUI(LaborService laborService) {
         this.laborService = laborService;
@@ -26,19 +29,19 @@ public class LaborUI {
 
         double totalLaborCost = 0.0;
 
-        System.out.println(BLEU+"\n---------------------------------------     Add Labors    ------------------------------------------\n"+RESET);
+        System.out.println(PURPLE+"\n---------------------------------------     Add Labors    ------------------------------------------\n"+RESET);
 
         do {
-        System.out.print("Enter the type of labor (e.g., General Worker, Specialist): ");
+        System.out.print("\nEnter the type of labor (e.g., General Worker, Specialist): ");
         String name = scanner.nextLine();
 
-        System.out.print("Enter the hourly rate for this labor (€ / h): ");
+        System.out.print("\nEnter the hourly rate for this labor (€ / h): ");
         Double hourlyRate = scanner.nextDouble();
 
-        System.out.print("Enter the number of hours worked: ");
+        System.out.print("\nEnter the number of hours worked: ");
         Double workHours = scanner.nextDouble();
 
-        System.out.print("Enter the productivity factor (1.0 = standard, > 1.0 = high productivity): ");
+        System.out.print("\nEnter the productivity factor (1.0 = standard, > 1.0 = high productivity): ");
         Double workerProductivity = scanner.nextDouble();
         scanner.nextLine();
 
@@ -51,11 +54,11 @@ public class LaborUI {
                 totalLaborCost += laborCost;
                 System.out.println(GREEN + "Labor added successfully! Cost of this labor: " + laborCost + "€" + RESET);
             } else {
-                System.out.println("Failed to add labor.");
+                System.out.println(RED+"Failed to add labor."+RESET);
             }
 
 
-        System.out.print("Would you like to add another labor? (y/n): ");
+        System.out.print(PURPLE+"\nWould you like to add another labor? (y/n): "+RESET);
         }while (scanner.nextLine().equalsIgnoreCase("y"));
 
         return totalLaborCost;

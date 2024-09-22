@@ -11,10 +11,10 @@ public class MaterialUI {
 
     private MaterialService materialService;
     private Scanner scanner;
-    final String YELLOW = "\u001B[33m";
-    final String BLEU = "\u001B[94m";
+    final String CYAN = "\033[0;36m";
     final String GREEN = "\u001B[92m";
     final String RESET = "\u001B[0m";
+    final String RED = "\033[0;31m";
 
     public MaterialUI(MaterialService materialService) {
         this.materialService = materialService;
@@ -24,10 +24,10 @@ public class MaterialUI {
     public Double addMaterialUI(Project project) {
 
         double totalMaterialCost = 0.0;
-        System.out.println(BLEU+"\n---------------------------------------     Add Materials   ------------------------------------------\n"+RESET);
+        System.out.println(CYAN+"\n-----------------------------------------     Add Materials   --------------------------------------------\n"+RESET);
 
         do{
-        System.out.print("Enter material name: ");
+        System.out.print("\nEnter material name: ");
         String name = scanner.nextLine();
 
         System.out.print("\nEnter material quantity (e.g., m² or liters): ");
@@ -57,12 +57,12 @@ public class MaterialUI {
         if (success) {
             double materialCost = material.calculateTotalCost();
             totalMaterialCost += materialCost;
-            System.out.println(GREEN+"Material added successfully!"+RESET);
+            System.out.println(GREEN+"Material added successfully! Cost of this material : "+materialCost+" €"+RESET);
         } else {
-            System.out.println("Failed to add material.");
+            System.out.println(RED+"Failed to add material."+RESET);
         }
 
-        System.out.print("\n Would you like to add another material? (y/n): ");
+        System.out.print(CYAN+"\n Would you like to add another material? (y/n): "+RESET);
         }while (scanner.nextLine().equalsIgnoreCase("y"));
 
         return totalMaterialCost;
