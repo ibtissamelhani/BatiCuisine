@@ -48,11 +48,6 @@ public class QuoteUI {
 
         // Create the quote
         Quote newQuote = new Quote(totalCost,validityDate,issueDate,false,project);
-//        newQuote.setEstimatedAmount(totalCost);
-//        newQuote.setIssueDate(issueDate);
-//        newQuote.setValidityDate(validityDate);
-//        newQuote.setAccepted(false);
-//        newQuote.setProject(project);
 
         System.out.print("Do you wish to save the quote? (y/n):");
         String choice = scanner.nextLine();
@@ -69,6 +64,7 @@ public class QuoteUI {
     }
 
    public void deleteQuoteUI() {
+       System.out.println("deleting quote");
         Quote quote = showQuoteUI();
         if (quote != null) {
             boolean success = quoteService.delete(quote.getId());
@@ -76,6 +72,58 @@ public class QuoteUI {
                 System.out.println("Quote deleted successfully!");
             }
         }
+   }
+
+   public void updateQuoteUI() {
+       System.out.println("updating quote");
+        Quote quote = showQuoteUI();
+        if (quote != null) {
+            System.out.print("Enter new issue date (format: dd/MM/yyyy, or press Enter to keep current): ");
+            String issueDateStr = scanner.nextLine();
+            if (!issueDateStr.isEmpty()) {
+                LocalDate newIssueDate = DateFormat.parseDate(issueDateStr);
+                quote.setIssueDate(newIssueDate);
+            }
+
+            LocalDate validityDate = quote.getValidityDate();
+            while (true) {
+                System.out.print("Enter new validity date (format: dd/MM/yyyy, or press Enter to keep current): ");
+                String validityDateStr = scanner.nextLine();
+                if (validityDateStr.isEmpty()) {
+                    break;
+                } else {
+                    LocalDate newValidityDate = DateFormat.parseDate(validityDateStr);
+                    if (!newValidityDate.isBefore(quote.getIssueDate())) {
+                        quote.setValidityDate(newValidityDate);
+                        break;
+                    } else {
+                        System.out.println("Validity date cannot be before the issue date. Please enter a valid date.");
+                    }
+                }
+            }
+
+            System.out.print("Is the quote accepted? (y/n, or press Enter to keep current): ");
+            String acceptedInput = scanner.nextLine();
+            if (!acceptedInput.isEmpty()) {
+                quote.setAccepted(acceptedInput.equalsIgnoreCase("y"));
+            }
+
+            System.out.print("Do you wish to save the changes? (y/n): ");
+            String saveChoice = scanner.nextLine();
+            if (saveChoice.equalsIgnoreCase("y")) {
+                boolean success = quoteService.update(quote);
+                if (success) {
+                    System.out.println("Quote updated successfully!");
+                } else {
+                    System.out.println("Error while updating the quote.");
+                }
+            } else {
+                System.out.println("Quote update canceled.");
+            }
+
+
+        }
+
    }
 
     public Quote showQuoteUI() {

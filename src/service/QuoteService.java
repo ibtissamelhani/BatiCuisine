@@ -24,4 +24,8 @@ public class QuoteService {
     public boolean delete(int id) {
         return quoteRepository.delete(id);
     }
+
+    public boolean update(Quote quote) {
+        return quoteRepository.update(quote);
+    }
 }

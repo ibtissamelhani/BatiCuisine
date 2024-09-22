@@ -81,19 +81,16 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public boolean update(Quote quote) {
-        String query = "UPDATE quotes SET estimated_amount = ?, validity_date = ?, issue_date = ?, is_accepted = ? WHERE project_id = ?";
+        String query = "UPDATE quotes SET validity_date = ?, issue_date = ?, is_accepted = ? WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Set the parameters for the update query
-            stmt.setDouble(1, quote.getEstimatedAmount());
-            stmt.setDate(2, Date.valueOf(quote.getValidityDate()));
-            stmt.setDate(3, Date.valueOf(quote.getIssueDate()));
-            stmt.setBoolean(4, quote.getAccepted());
-            stmt.setInt(5, quote.getProject().getId());
+            stmt.setDate(1, Date.valueOf(quote.getValidityDate()));
+            stmt.setDate(2, Date.valueOf(quote.getIssueDate()));
+            stmt.setBoolean(3, quote.getAccepted());
+            stmt.setInt(4, quote.getId());
 
-            // Execute the update and check if it was successful
             int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;  // Return true if at least one row was updated
+            return rowsUpdated > 0;
 
         } catch (SQLException e) {
             System.err.println("Error while updating quote: " + e.getMessage());

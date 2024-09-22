@@ -174,7 +174,7 @@ public class Menu {
 
             switch (choice) {
                 case "1":
-                    quoteUI.showQuoteUI();
+                    quoteUI.updateQuoteUI();
                     break;
                 case "2":
                     quoteUI.deleteQuoteUI();
