@@ -4,13 +4,13 @@ import model.entities.Material;
 import model.entities.Project;
 import model.enums.ComponentType;
 import service.MaterialService;
+import utils.InputValidation;
 
 import java.util.Scanner;
 
 public class MaterialUI {
 
     private MaterialService materialService;
-    private Scanner scanner;
     final String CYAN = "\033[0;36m";
     final String GREEN = "\u001B[92m";
     final String RESET = "\u001B[0m";
@@ -18,37 +18,27 @@ public class MaterialUI {
 
     public MaterialUI(MaterialService materialService) {
         this.materialService = materialService;
-        this.scanner =  new Scanner(System.in);
     }
 
     public Double addMaterialUI(Project project) {
 
+        String answer;
         double totalMaterialCost = 0.0;
         System.out.println(CYAN+"\n-----------------------------------------     Add Materials   --------------------------------------------\n"+RESET);
 
         do{
-        System.out.print("\nEnter material name: ");
-        String name = scanner.nextLine();
 
-        System.out.print("\nEnter material quantity (e.g., m² or liters): ");
-        double quantity = scanner.nextDouble();
-        scanner.nextLine();
+        String name = InputValidation.readString("Enter material name: ");
 
-        System.out.print("\nEnter unit cost of material (€): ");
-        double unitCost = scanner.nextDouble();
-        scanner.nextLine();
+        double quantity = InputValidation.readDouble("\nEnter material quantity (e.g., m² or liters): ");
 
-        System.out.print("\nEnter transport cost of material (€): ");
-        double transportCost = scanner.nextDouble();
-        scanner.nextLine();
+        double unitCost = InputValidation.readDouble("\nEnter unit cost of material (€): ");
 
-        System.out.print("\nEnter quality coefficient of material (1.0 = standard, > 1.0 = high quality): ");
-        double qualityCoefficient = scanner.nextDouble();
-        scanner.nextLine();
+        double transportCost = InputValidation.readDouble("\nEnter transport cost of material (€): ");
 
-        System.out.print("\nEnter tax rate (%): ");
-        double taxRate = scanner.nextDouble();
-        scanner.nextLine();
+        double qualityCoefficient = InputValidation.readDouble("\nEnter quality coefficient of material (1.0 = standard, > 1.0 = high quality): ");
+
+        double taxRate = InputValidation.readDouble("\nEnter tax rate (%): ");
 
         Material material = new Material(name, ComponentType.MATERIAL, quantity,project, unitCost, transportCost, qualityCoefficient, taxRate);
 
@@ -62,8 +52,10 @@ public class MaterialUI {
             System.out.println(RED+" Failed to add material."+RESET);
         }
 
-        System.out.print("\n Would you like to add another material? (y/n): ");
-        }while (scanner.nextLine().equalsIgnoreCase("y"));
+          answer = InputValidation.readString("\n Would you like to add another material? (y/n): ");
+
+
+        }while (answer.equalsIgnoreCase("y"));
 
         return totalMaterialCost;
     }

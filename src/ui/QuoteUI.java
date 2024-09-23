@@ -6,6 +6,7 @@ import model.entities.Quote;
 import service.ProjectService;
 import service.QuoteService;
 import utils.DateFormat;
+import utils.InputValidation;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,22 +38,9 @@ public class QuoteUI {
 
         System.out.println("\nThe estimated amount for the project is : " + String.format("%.2f", totalCost) + " €");
 
-        System.out.print("\nEnter the issue date of the quote (format: dd/MM/yyyy): ");
-        String issueDateStr = scanner.nextLine();
-        LocalDate issueDate = DateFormat.parseDate(issueDateStr);
-        LocalDate validityDate = LocalDate.now();
-        while (true){
-            System.out.print("\nEnter the validity date of the quote (format: dd/MM/yyyy): ");
-            String validityDateStr = scanner.nextLine();
-            validityDate = DateFormat.parseDate(validityDateStr);
+        LocalDate issueDate = DateFormat.readDate("\nEnter the issue date of the quote (format: dd/MM/yyyy): ");
 
-            if (!validityDate.isBefore(issueDate)) {
-                break;
-            } else {
-                System.out.println(" \n validate date cannot be before the issue date. Please enter valid dates.\n");
-            }
-        }
-
+        LocalDate validityDate = DateFormat.readAndValidateValidityDate(issueDate);
 
         // Create the quote
         Quote newQuote = new Quote(totalCost,validityDate,issueDate,false,project);
@@ -104,14 +92,12 @@ public class QuoteUI {
                 }
             }
 
-            System.out.print("Is the quote accepted? (y/n, or press Enter to keep current): ");
-            String acceptedInput = scanner.nextLine();
+            String acceptedInput = InputValidation.readString("Is the quote accepted? (y/n, or press Enter to keep current): ");
             if (!acceptedInput.isEmpty()) {
                 quote.setAccepted(acceptedInput.equalsIgnoreCase("y"));
             }
 
-            System.out.print("Do you wish to save the changes? (y/n): ");
-            String saveChoice = scanner.nextLine();
+            String saveChoice = InputValidation.readString("Do you wish to save the changes? (y/n): ");
             if (saveChoice.equalsIgnoreCase("y")) {
                 boolean success = quoteService.update(quote);
                 if (success) {

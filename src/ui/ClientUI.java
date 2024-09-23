@@ -2,6 +2,7 @@ package ui;
 
 import model.entities.Client;
 import service.ClientService;
+import utils.InputValidation;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,18 +27,14 @@ public class ClientUI {
 
         System.out.println(BLUE+"\n--------------------------------------- Create a New Client ---------------------------------------"+RESET);
 
-        System.out.print("\nEnter client name: ");
-        String name = scanner.nextLine();
+        String name = InputValidation.readString("\nEnter client name: ");
 
-        System.out.print("\nEnter client address: ");
-        String address = scanner.nextLine();
+        String address = InputValidation.readString("\nEnter client address: ");
 
-        System.out.print("\nEnter client phone: ");
-        String phone = scanner.nextLine();
+        String phone = InputValidation.readString("\nEnter client phone number: ");
 
-        System.out.print("\nIs the client a professional? (yes/no): ");
-        String isProfessionalInput = scanner.nextLine();
-        boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
+        String isProfessionalInput = InputValidation.readString("\nIs the client a professional? (y/n): ");
+        boolean isProfessional = isProfessionalInput.equalsIgnoreCase("y");
 
 
         Client newClient = clientService.creatClient(name, address, phone, isProfessional);
@@ -56,8 +53,7 @@ public class ClientUI {
 
     public void updateClientUI() {
         System.out.println(BLUE+"\n------------------------------------------- Update Client -------------------------------------------"+RESET);
-        System.out.print("\nEnter client name to update: ");
-        String name = scanner.nextLine();
+        String name = InputValidation.readString("\nEnter client name to update: ");
         Optional<Client> existingClient = clientService.getClientByName(name);
 
         if (existingClient.isPresent()) {
@@ -122,8 +118,7 @@ public class ClientUI {
     }
 
     public Client searchClientUI() {
-        System.out.print("\nEnter client name: ");
-        String name = scanner.nextLine();
+        String name = InputValidation.readString("\nEnter client name: ");
 
         Optional<Client> client = clientService.getClientByName(name);
         if (client.isPresent()) {
