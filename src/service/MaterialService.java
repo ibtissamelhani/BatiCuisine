@@ -2,12 +2,13 @@ package service;
 
 import model.entities.Material;
 import repository.MaterialRepositoryImpl;
+import repository.interfaces.MaterialRepository;
 
 public class MaterialService {
 
-    private MaterialRepositoryImpl materialRepository;
+    private MaterialRepository materialRepository;
 
-    public MaterialService(MaterialRepositoryImpl materialRepository) {
+    public MaterialService(MaterialRepository materialRepository) {
         this.materialRepository = materialRepository;
     }
 

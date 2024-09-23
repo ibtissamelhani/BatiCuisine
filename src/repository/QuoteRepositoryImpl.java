@@ -4,6 +4,7 @@ import model.entities.Client;
 import model.entities.Project;
 import model.entities.Quote;
 import model.enums.ProjectStatus;
+import repository.interfaces.ProjectRepository;
 import repository.interfaces.QuoteRepository;
 
 import java.sql.*;
@@ -14,9 +15,9 @@ import java.util.Optional;
 public class QuoteRepositoryImpl implements QuoteRepository {
 
     private Connection connection;
-    private ProjectRepositoryImpl projectRepository;
+    private ProjectRepository projectRepository;
 
-    public QuoteRepositoryImpl(Connection connection, ProjectRepositoryImpl projectRepository) {
+    public QuoteRepositoryImpl(Connection connection, ProjectRepository projectRepository) {
         this.connection = connection;
         this.projectRepository = projectRepository;
     }

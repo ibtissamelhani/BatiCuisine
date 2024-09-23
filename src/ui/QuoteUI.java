@@ -3,6 +3,7 @@ package ui;
 import model.entities.Client;
 import model.entities.Project;
 import model.entities.Quote;
+import model.enums.ProjectStatus;
 import service.ProjectService;
 import service.QuoteService;
 import utils.DateFormat;
@@ -95,6 +96,12 @@ public class QuoteUI {
             String acceptedInput = InputValidation.readString("Is the quote accepted? (y/n, or press Enter to keep current): ");
             if (!acceptedInput.isEmpty()) {
                 quote.setAccepted(acceptedInput.equalsIgnoreCase("y"));
+                if (!quote.getAccepted() || quote.getValidityDate().isBefore(LocalDate.now())) {
+                    Project project = quote.getProject();
+                    project.setProjectStatus(ProjectStatus.CANCELED);
+                    projectService.update(project);
+                    System.out.println("The project status has been updated to CANCELED due to the quote being refused or invalid.");
+                }
             }
 
             String saveChoice = InputValidation.readString("Do you wish to save the changes? (y/n): ");

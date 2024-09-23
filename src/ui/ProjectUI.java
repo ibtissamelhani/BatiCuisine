@@ -105,4 +105,8 @@ public class ProjectUI {
 
     }
 
+    public Project findProjectWithDetailsUI(){
+        return null;
+    }
+
 }
