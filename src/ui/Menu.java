@@ -2,6 +2,7 @@ package ui;
 
 import database.DataBaseConnection;
 import model.entities.Client;
+import model.entities.Project;
 import repository.*;
 import service.*;
 
@@ -119,18 +120,19 @@ public class Menu {
     public void projectMenu(){
         while(!quit){
             System.out.println("\n\n********************************************************************************");
-            System.out.println("*     Would you like to search for an existing client or add a new one?        *");
+            System.out.println("*                           PROJECT MANAGEMENT                                 *");
             System.out.println("********************************************************************************");
             System.out.println("*  1. Search for an existing client                                            *");
             System.out.println("*  2. Add a new client                                                         *");
-            System.out.println("*  3. Return to Main Menu                                                      *");
-            System.out.println("*  4. Exit                                                                     *");
+            System.out.println("*  3. Show Project                                                             *");
+            System.out.println("*  4. Return to Main Menu                                                      *");
+            System.out.println("*  5. Exit                                                                     *");
             System.out.println("********************************************************************************\n"+RESET);
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();
             Client client = null;
-
+            Project project = null;
             switch(choice){
                 case "1":
                     client = clientUI.searchClientUI();
@@ -139,10 +141,13 @@ public class Menu {
                     client = clientUI.createClientUI();
                     break;
                 case "3":
+                    project = projectUI.findProjectWithDetailsUI();
+                    break;
+                case "4":
                     quit = true;
                     System.out.println("return to principal menu");
                     break;
-                case "4":
+                case "5":
                     System.out.println("exit");
                     System.exit(0);
                 default:

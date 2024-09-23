@@ -47,4 +47,8 @@ public class ProjectService {
     public boolean update(Project project) {
         return projectRepository.update(project);
     }
+
+    public Project findProjectWithDetails(int id) {
+        return projectRepository.findProjectWithDetails(id);
+    }
 }

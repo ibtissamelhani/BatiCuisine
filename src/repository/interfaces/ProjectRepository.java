@@ -10,4 +10,5 @@ public interface ProjectRepository {
     Optional<Project> findById(int id);
     Boolean update(Project project);
     Optional<Project> findByNameAndClient(String projectName, String clientName);
+    Project findProjectWithDetails(int projectId);
 }
