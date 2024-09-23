@@ -38,20 +38,21 @@ public class Menu {
     final String BLUE = "\u001B[34m";
     final String RESET = "\u001B[0m";
     final String RED = "\033[0;31m";
+    String space = "\t\t\t\t\t";
 
 
     public void start(){
 
         while (true){
             quit = false;
-            System.out.println("\n********************************************************************************");
-            System.out.println("*                                  Principal Menu                              *");
-            System.out.println("********************************************************************************");
-            System.out.println("*  1. Client Management                                                        *");
-            System.out.println("*  2. Project Management                                                       *");
-            System.out.println("*  3. Quote Management                                                         *");
-            System.out.println("*  4. Exit                                                                     *");
-            System.out.println("********************************************************************************\n");
+            System.out.println("\n"+space+"********************************************************************************");
+            System.out.println(space+"*                                  Principal Menu                              *");
+            System.out.println(space+"********************************************************************************");
+            System.out.println(space+"*  1. Client Management                                                        *");
+            System.out.println(space+"*  2. Project Management                                                       *");
+            System.out.println(space+"*  3. Quote Management                                                         *");
+            System.out.println(space+"*  4. Exit                                                                     *");
+            System.out.println(space+"********************************************************************************\n");
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();
@@ -76,16 +77,16 @@ public class Menu {
 
     public void clientMenu() {
         while(!quit) {
-            System.out.println("\n********************************************************************************");
-            System.out.println("*                                  Client Management                           *");
-            System.out.println("********************************************************************************");
-            System.out.println("*  1. Add new client                                                           *");
-            System.out.println("*  2. Update a client                                                          *");
-            System.out.println("*  3. Delete a client                                                          *");
-            System.out.println("*  4. Show all clients                                                         *");
-            System.out.println("*  5. Return to Main Menu                                                      *");
-            System.out.println("*  6. Exit                                                                     *");
-            System.out.println("********************************************************************************\n");
+            System.out.println(BLUE+"\n"+space+"********************************************************************************");
+            System.out.println(space+"*                                  Client Management                           *");
+            System.out.println(space+"********************************************************************************");
+            System.out.println(space+"*  1. Add new client                                                           *");
+            System.out.println(space+"*  2. Update a client                                                          *");
+            System.out.println(space+"*  3. Delete a client                                                          *");
+            System.out.println(space+"*  4. Show all clients                                                         *");
+            System.out.println(space+"*  5. Return to Main Menu                                                      *");
+            System.out.println(space+"*  6. Exit                                                                     *");
+            System.out.println(space+"********************************************************************************\n"+RESET);
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();
@@ -164,15 +165,15 @@ public class Menu {
 
     public void quoteMenu() {
         while(!quit) {
-            System.out.println("\n********************************************************************************");
-            System.out.println("*                                  Quote Management                            *");
-            System.out.println("********************************************************************************");
-            System.out.println("*  1. Update a Quote                                                           *");
-            System.out.println("*  2. Delete a Quote                                                           *");
-            System.out.println("*  3. Show all Quotes                                                          *");
-            System.out.println("*  4. Return to Main Menu                                                      *");
-            System.out.println("*  5. Exit                                                                     *");
-            System.out.println("********************************************************************************\n");
+            System.out.println(RED+"\n"+space+"********************************************************************************");
+            System.out.println(space+"*                                  Quote Management                            *");
+            System.out.println(space+"********************************************************************************");
+            System.out.println(space+"*  1. Update a Quote                                                           *");
+            System.out.println(space+"*  2. Delete a Quote                                                           *");
+            System.out.println(space+"*  3. Show all Quotes                                                          *");
+            System.out.println(space+"*  4. Return to Main Menu                                                      *");
+            System.out.println(space+"*  5. Exit                                                                     *");
+            System.out.println(space+"********************************************************************************\n"+RESET);
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();

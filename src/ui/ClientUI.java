@@ -2,6 +2,7 @@ package ui;
 
 import model.entities.Client;
 import service.ClientService;
+import utils.InputValidation;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,67 +25,62 @@ public class ClientUI {
 
     public Client createClientUI() {
 
-        System.out.println("Create a New Client");
+        System.out.println(BLUE+"\n--------------------------------------- Create a New Client ---------------------------------------"+RESET);
 
-        System.out.print("Enter client name: ");
-        String name = scanner.nextLine();
+        String name = InputValidation.readString("\nEnter client name: ");
 
-        System.out.print("Enter client address: ");
-        String address = scanner.nextLine();
+        String address = InputValidation.readString("\nEnter client address: ");
 
-        System.out.print("Enter client phone: ");
-        String phone = scanner.nextLine();
+        String phone = InputValidation.readString("\nEnter client phone number: ");
 
-        System.out.print("Is the client a professional? (yes/no): ");
-        String isProfessionalInput = scanner.nextLine();
-        boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
+        String isProfessionalInput = InputValidation.readString("\nIs the client a professional? (y/n): ");
+        boolean isProfessional = isProfessionalInput.equalsIgnoreCase("y");
 
 
         Client newClient = clientService.creatClient(name, address, phone, isProfessional);
 
         if (newClient != null) {
-            System.out.println("\n Client created successfully! \n");
-            System.out.println(GREEN+"- Name: "+RESET + newClient.getName());
-            System.out.println(GREEN+"- Address: "+RESET + newClient.getAddress());
-            System.out.println(GREEN+"- Phone: "+RESET + newClient.getPhone());
-            System.out.println(GREEN+"- Professional: "+RESET + (newClient.getProfessional() ? "Yes" : "No"));
-            return newClient;
+            System.out.println(GREEN+"\n         Client created successfully! \n"+RESET);
+            System.out.println(GREEN+"- Name : "+RESET + newClient.getName());
+            System.out.println(GREEN+"- Address : "+RESET + newClient.getAddress());
+            System.out.println(GREEN+"- Phone : "+RESET + newClient.getPhone());
+            System.out.println(GREEN+"- Professional : "+RESET + (newClient.getProfessional() ? "Yes" : "No"));
         } else {
-            System.out.println("Failed to create client. The name might already be in use.");
+            System.out.println(RED+" Failed to create client. The name might already be in use."+RESET);
         }
-        return null;
+        return newClient;
     }
 
     public void updateClientUI() {
-        System.out.print("Enter client name to update: ");
-        String name = scanner.nextLine();
+        System.out.println(BLUE+"\n------------------------------------------- Update Client -------------------------------------------"+RESET);
+        String name = InputValidation.readString("\nEnter client name to update: ");
         Optional<Client> existingClient = clientService.getClientByName(name);
 
         if (existingClient.isPresent()) {
             Client client = existingClient.get();
-            System.out.println("Client found ! ");
+            System.out.println(GREEN+"Client found ! "+RESET);
             System.out.println(GREEN + "- Name: " + RESET + client.getName()+ GREEN +"- Address: "  + RESET+ client.getAddress()+ GREEN +"- Phone: " + RESET + client.getPhone()+GREEN + "- Professional: " + RESET + (client.getProfessional() ? "Yes" : "No")  );
 
 
-            System.out.print("Enter new Name (or press Enter to keep the old one): ");
+            System.out.print("\nEnter new Name (or press Enter to keep the old one): ");
             String newName = scanner.nextLine();
             if (!newName.trim().isEmpty()) {
                 client.setName(newName);
             }
 
-            System.out.print("Enter new Address (or press Enter to keep the old one): ");
+            System.out.print("\nEnter new Address (or press Enter to keep the old one): ");
             String newAddress = scanner.nextLine();
             if (!newAddress.trim().isEmpty()) {
                 client.setAddress(newAddress);
             }
 
-            System.out.print("Enter new Phone (or press Enter to keep the old one): ");
+            System.out.print("\nEnter new Phone (or press Enter to keep the old one): ");
             String newPhone = scanner.nextLine();
             if (!newPhone.trim().isEmpty()) {
                 client.setPhone(newPhone);
             }
 
-            System.out.print("Is the client professional? (yes/no or press Enter to keep the old value): ");
+            System.out.print("\nIs the client professional? (yes/no or press Enter to keep the old value): ");
             String isProfessionalInput = scanner.nextLine();
             if (!isProfessionalInput.trim().isEmpty()) {
                 boolean isProfessional = isProfessionalInput.equalsIgnoreCase("yes");
@@ -93,45 +89,47 @@ public class ClientUI {
             }
 
             Client updatedClient = clientService.updateClient(client);
-            System.out.println("\n Client updated successfully! \n");
+            System.out.println(GREEN+"\n          Client updated successfully! \n"+RESET);
             System.out.println(BLUE+"- Name: "+RESET + updatedClient.getName());
             System.out.println(BLUE+"- Address: "+RESET + updatedClient.getAddress());
             System.out.println(BLUE+"- Phone: "+RESET + updatedClient.getPhone());
             System.out.println(BLUE+"- Professional: "+RESET + (updatedClient.getProfessional() ? "Yes" : "No"));
 
         } else {
-            System.out.println(RED + "Client not found!" + RESET);
+            System.out.println(RED + " Client not found!" + RESET);
         }
     }
 
     public void deleteClientUI() {
+        System.out.println(BLUE+"\n------------------------------------------- Delete Client -------------------------------------------"+RESET);
         System.out.print("\n Enter client name to delete: ");
         String name = scanner.nextLine();
         Optional<Client> existingClient = clientService.getClientByName(name);
         if (existingClient.isPresent()) {
             boolean isDeleted = clientService.deleteClient(existingClient.get().getId());
             if (isDeleted) {
-                System.out.println(RED+ "\n  Client deleted successfully! \n");
+                System.out.println(RED+ "\n  Client deleted successfully! \n"+RESET);
             }else{
-                System.out.println("\n problem while deleting client" + RESET);
+                System.out.println(RED+"\n problem while deleting client" + RESET);
             }
+        }else {
+            System.out.println(RED + " Client not found!" + RESET);
         }
     }
 
     public Client searchClientUI() {
-        System.out.print("Enter client name: ");
-        String name = scanner.nextLine();
+        String name = InputValidation.readString("\nEnter client name: ");
 
         Optional<Client> client = clientService.getClientByName(name);
         if (client.isPresent()) {
-            System.out.println("\n Client found !\n");
-            System.out.println(BLUE+"- Name: "+RESET + client.get().getName());
-            System.out.println(BLUE+"- Address: "+RESET + client.get().getAddress());
-            System.out.println(BLUE+"- Phone: "+RESET + client.get().getPhone());
-            System.out.println(BLUE+"- Professional: "+RESET + (client.get().getProfessional() ? "Yes" : "No"));
+            System.out.println(GREEN+"\n        Client found !\n"+RESET);
+            System.out.println(GREEN+"- Name: "+RESET + client.get().getName());
+            System.out.println(GREEN+"- Address: "+RESET + client.get().getAddress());
+            System.out.println(GREEN+"- Phone: "+RESET + client.get().getPhone());
+            System.out.println(GREEN+"- Professional: "+RESET + (client.get().getProfessional() ? "Yes" : "No"));
             return client.get();
         }else {
-            System.out.println("Failed to get client with name " + name);
+            System.out.println(RED+" Failed to get client with name " + name+RESET);
             return null;
         }
     }

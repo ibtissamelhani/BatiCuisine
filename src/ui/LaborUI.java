@@ -4,13 +4,13 @@ import model.entities.Labor;
 import model.entities.Project;
 import model.enums.ComponentType;
 import service.LaborService;
+import utils.InputValidation;
 
 import java.util.Scanner;
 
 public class LaborUI {
 
     private LaborService laborService;
-    private Scanner scanner;
 
     final String PURPLE = "\033[0;35m";
     final String GREEN = "\u001B[92m";
@@ -21,29 +21,24 @@ public class LaborUI {
 
     public LaborUI(LaborService laborService) {
         this.laborService = laborService;
-        this.scanner = new Scanner(System.in);
     }
 
 
     public Double addLaborUI(Project project) {
 
         double totalLaborCost = 0.0;
+        String answer;
 
-        System.out.println(PURPLE+"\n---------------------------------------     Add Labors    ------------------------------------------\n"+RESET);
+        System.out.println(PURPLE+"\n------------------------------------------     Add Labors    ---------------------------------------------\n"+RESET);
 
         do {
-        System.out.print("\nEnter the type of labor (e.g., General Worker, Specialist): ");
-        String name = scanner.nextLine();
+        String name = InputValidation.readString("\nEnter the type of labor (e.g., General Worker, Specialist): ");
 
-        System.out.print("\nEnter the hourly rate for this labor (€ / h): ");
-        Double hourlyRate = scanner.nextDouble();
+        Double hourlyRate = InputValidation.readDouble("\nEnter the hourly rate for this labor (€ / h): ");
 
-        System.out.print("\nEnter the number of hours worked: ");
-        Double workHours = scanner.nextDouble();
+        Double workHours = InputValidation.readDouble("\nEnter the number of hours worked: ");
 
-        System.out.print("\nEnter the productivity factor (1.0 = standard, > 1.0 = high productivity): ");
-        Double workerProductivity = scanner.nextDouble();
-        scanner.nextLine();
+        Double workerProductivity = InputValidation.readDouble("\nEnter the productivity factor (1.0 = standard, > 1.0 = high productivity): ");
 
         Labor labor = new Labor(name,ComponentType.LABOR,0.20,hourlyRate,workHours,workerProductivity,project);
 
@@ -52,14 +47,14 @@ public class LaborUI {
             if (success) {
                 double laborCost = labor.calculateTotalCost();
                 totalLaborCost += laborCost;
-                System.out.println(GREEN + "Labor added successfully! Cost of this labor: " + laborCost + "€" + RESET);
+                System.out.println(GREEN + "\nLabor added successfully! Cost of this labor: " + laborCost + "€" + RESET);
             } else {
-                System.out.println(RED+"Failed to add labor."+RESET);
+                System.out.println(RED+" Failed to add labor."+RESET);
             }
 
+            answer = InputValidation.readString("\nWould you like to add another labor? (y/n): ");
 
-        System.out.print(PURPLE+"\nWould you like to add another labor? (y/n): "+RESET);
-        }while (scanner.nextLine().equalsIgnoreCase("y"));
+        }while (answer.equalsIgnoreCase("y"));
 
         return totalLaborCost;
     }
