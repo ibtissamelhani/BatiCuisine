@@ -4,6 +4,7 @@ import database.DataBaseConnection;
 import model.entities.Client;
 import model.entities.Project;
 import repository.*;
+import repository.interfaces.*;
 import service.*;
 
 import java.sql.Connection;
@@ -13,11 +14,11 @@ public class Menu {
 
     private final Connection connection =  DataBaseConnection.getInstance().getConnection();
 
-    private final MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
-    private final ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
-    private final ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
-    private final LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
-    private final QuoteRepositoryImpl quoteRepository = new QuoteRepositoryImpl(connection, projectRepository);
+    private final MaterialRepository materialRepository = new MaterialRepositoryImpl(connection);
+    private final ClientRepository clientRepository = new ClientRepositoryImpl(connection);
+    private final ProjectRepository projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
+    private final LaborRepository laborRepository = new LaborRepositoryImpl(connection);
+    private final QuoteRepository quoteRepository = new QuoteRepositoryImpl(connection, projectRepository);
 
     private final ClientService clientService = new ClientService(clientRepository);
     private final ProjectService projectService = new ProjectService(projectRepository);

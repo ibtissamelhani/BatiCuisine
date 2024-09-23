@@ -2,14 +2,15 @@ package service;
 
 import model.entities.Project;
 import repository.ProjectRepositoryImpl;
+import repository.interfaces.ProjectRepository;
 
 import java.util.Optional;
 
 public class ProjectService {
 
-    private ProjectRepositoryImpl projectRepository;
+    private ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepositoryImpl projectRepository) {
+    public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 

@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public class ProjectRepositoryImpl implements ProjectRepository {
 
-    private ClientRepositoryImpl clientRepository;
+    private ClientRepository clientRepository;
     Connection connection;
-    public ProjectRepositoryImpl(ClientRepositoryImpl clientRepository, Connection connection) {
+    public ProjectRepositoryImpl(ClientRepository clientRepository, Connection connection) {
         this.connection = connection;
         this.clientRepository = clientRepository;
     }
