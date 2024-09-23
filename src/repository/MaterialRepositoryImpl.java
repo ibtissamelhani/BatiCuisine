@@ -46,7 +46,6 @@ public class MaterialRepositoryImpl implements MaterialRepository {
             }
 
             connection.commit();
-            System.out.println("Material and component saved successfully.");
 
         } catch (SQLException e) {
             try {

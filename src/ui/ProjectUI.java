@@ -20,6 +20,8 @@ public class ProjectUI {
     final String YELLOW = "\u001B[33m";
     final String BLUE = "\u001B[34m";
     final String RESET = "\u001B[0m";
+    final String RED = "\u001B[31m";
+
 
     public ProjectUI(ProjectService projectService,MaterialUI materialUI, LaborUI laborUI,ClientService clientService,QuoteUI quoteUI) {
         this.projectService = projectService;
@@ -32,11 +34,11 @@ public class ProjectUI {
 
     public void createProjectForClient(Client client) {
 
-        System.out.println(BLUE + "\n--------------------------------------- Creating a New Project ------------------------------------------\n" + RESET);
-        System.out.print("Enter project name: ");
+        System.out.println(YELLOW + "\n--------------------------------------- Creating a New Project ------------------------------------------\n" + RESET);
+        System.out.print("\nEnter project name: ");
         String projectName = scanner.nextLine();
 
-        System.out.print("Enter the project area (in m²): ");
+        System.out.print("\nEnter the project area (in m²): ");
         double surfaceArea = scanner.nextDouble();
         scanner.nextLine();
 
@@ -52,24 +54,24 @@ public class ProjectUI {
         System.out.println(YELLOW+"\n--------------------------------------- Total Cost Calculation ------------------------------------------\n"+RESET);
 
         double totalCost = 0.0;
-        System.out.print("Would you like to apply a profit margin to the project? (y/n): ");
+        System.out.print("\nWould you like to apply a profit margin to the project? (y/n): ");
         String applyMargin = scanner.nextLine();
 
         double profitMarginPercentage = 0.0;
         if (applyMargin.equalsIgnoreCase("y")) {
-            System.out.print("Enter the profit margin percentage (%): ");
+            System.out.print("\nEnter the profit margin percentage (%): ");
             profitMarginPercentage = scanner.nextDouble();
             scanner.nextLine();
         }
 
         totalCost = totalCost + materialCost + laborCost;
-        System.out.println("---->Total cost of the project: " + String.format("%.2f", totalCost) + " €");
+        System.out.println(YELLOW+"\n---->Total cost of the project: "+RESET + String.format("%.2f", totalCost) + " €");
 
         // Add the profit margin to the total cost
         totalCost = totalCost * (1 + (profitMarginPercentage/100));
-        System.out.println("---->Total cost of the project after profit margin: " + String.format("%.2f", totalCost) + " €");
+        System.out.println(YELLOW+"\n---->Total cost of the project after profit margin: "+RESET + String.format("%.2f", totalCost) + " €");
 
-        System.out.print("Would you like to apply VAT to the project? (y/n): ");
+        System.out.print("\nWould you like to apply VAT to the project? (y/n): ");
         String applyVAT = scanner.nextLine();
 
         //apply TVA
@@ -80,14 +82,14 @@ public class ProjectUI {
             scanner.nextLine();
 
             totalCost =  totalCost * (1 + (TVAPercentage/100));
-            System.out.println("---->Total cost of the project after applying VTA: " + String.format("%.2f", totalCost) + " €");
+            System.out.println(YELLOW+"\n---->Total cost of the project after applying VTA: "+RESET + String.format("%.2f", totalCost) + " €");
         }
 
         //if client is pro apply discount
         Optional<Client> client = clientService.getClientById(project.getClient().getId());
         double discount = 0.0;
         if (client.isPresent() && client.get().getProfessional()) {
-            System.out.println("client : "+client.get().getName()+" is professional client");
+            System.out.println(RED+"\nclient : "+client.get().getName()+" is professional client"+RESET);
             System.out.print("Would you like to give discount for this client? (y/n): ");
             String applyDiscount = scanner.nextLine();
             if (applyDiscount.equalsIgnoreCase("y")) {
@@ -97,9 +99,11 @@ public class ProjectUI {
             }
             // Add the discount  to the total cost
             totalCost = totalCost * (1 - (discount/100));
-            System.out.println("---->Total cost of the project after discount: " + String.format("%.2f", totalCost) + " €");
+            System.out.println(YELLOW+"\n---->Total cost of the project after discount: "+RESET + String.format("%.2f", totalCost) + " €");
 
         }
+
+        System.out.println(YELLOW+"Total cost of the Project : "+RESET+String.format("%.2f", totalCost) + " €");
 
         project.setProfitMargin(profitMarginPercentage);
         project.setTotalCost(totalCost);

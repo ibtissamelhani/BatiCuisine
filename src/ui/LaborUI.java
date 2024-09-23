@@ -29,7 +29,7 @@ public class LaborUI {
 
         double totalLaborCost = 0.0;
 
-        System.out.println(PURPLE+"\n---------------------------------------     Add Labors    ------------------------------------------\n"+RESET);
+        System.out.println(PURPLE+"\n------------------------------------------     Add Labors    ---------------------------------------------\n"+RESET);
 
         do {
         System.out.print("\nEnter the type of labor (e.g., General Worker, Specialist): ");
@@ -52,13 +52,13 @@ public class LaborUI {
             if (success) {
                 double laborCost = labor.calculateTotalCost();
                 totalLaborCost += laborCost;
-                System.out.println(GREEN + "Labor added successfully! Cost of this labor: " + laborCost + "€" + RESET);
+                System.out.println(GREEN + "\nLabor added successfully! Cost of this labor: " + laborCost + "€" + RESET);
             } else {
-                System.out.println(RED+"Failed to add labor."+RESET);
+                System.out.println(RED+" Failed to add labor."+RESET);
             }
 
 
-        System.out.print(PURPLE+"\nWould you like to add another labor? (y/n): "+RESET);
+        System.out.print("\nWould you like to add another labor? (y/n): ");
         }while (scanner.nextLine().equalsIgnoreCase("y"));
 
         return totalLaborCost;

@@ -17,6 +17,12 @@ public class QuoteUI {
     private QuoteService quoteService;
     private ProjectService projectService;
     private Scanner scanner;
+    final String RED = "\u001B[31m";
+    final String BLUE = "\u001B[34m";
+    final String GREEN = "\u001B[92m";
+    final String RESET = "\u001B[0m";
+
+
 
     public QuoteUI(QuoteService quoteService, ProjectService projectService) {
         this.quoteService = quoteService;
@@ -25,18 +31,18 @@ public class QuoteUI {
     }
 
     public void createQuoteUI(Project project) {
-        System.out.println("------------------------------------------- Quote Registration -------------------------");
+        System.out.println(BLUE+"\n------------------------------------------- Quote Registration -------------------------"+RESET);
 
         double totalCost = project.getTotalCost();
 
-        System.out.println("The estimated amount for the project is : " + String.format("%.2f", totalCost) + " €");
+        System.out.println("\nThe estimated amount for the project is : " + String.format("%.2f", totalCost) + " €");
 
-        System.out.print("Enter the issue date of the quote (format: dd/MM/yyyy): ");
+        System.out.print("\nEnter the issue date of the quote (format: dd/MM/yyyy): ");
         String issueDateStr = scanner.nextLine();
         LocalDate issueDate = DateFormat.parseDate(issueDateStr);
         LocalDate validityDate = LocalDate.now();
         while (true){
-            System.out.print("Enter the validity date of the quote (format: dd/MM/yyyy): ");
+            System.out.print("\nEnter the validity date of the quote (format: dd/MM/yyyy): ");
             String validityDateStr = scanner.nextLine();
             validityDate = DateFormat.parseDate(validityDateStr);
 
@@ -51,18 +57,12 @@ public class QuoteUI {
         // Create the quote
         Quote newQuote = new Quote(totalCost,validityDate,issueDate,false,project);
 
-        System.out.print("Do you wish to save the quote? (y/n):");
-        String choice = scanner.nextLine();
-        if (choice.equalsIgnoreCase("y")) {
             boolean success = quoteService.createQuote(newQuote);
             if (success) {
-                System.out.println("Quote saved successfully!");
+                System.out.println(GREEN+" Quote saved successfully!"+RESET);
             } else {
-                System.out.println("Error while saving the quote.");
+                System.out.println(RED+" Error while saving the quote."+RESET);
             }
-        } else {
-            System.out.println("Quote registration canceled.");
-        }
     }
 
     public void deleteQuoteUI() {

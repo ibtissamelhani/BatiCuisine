@@ -57,12 +57,12 @@ public class MaterialUI {
         if (success) {
             double materialCost = material.calculateTotalCost();
             totalMaterialCost += materialCost;
-            System.out.println(GREEN+"Material added successfully! Cost of this material : "+materialCost+" €"+RESET);
+            System.out.println(GREEN+"\nMaterial added successfully! Cost of this material : "+String.format("%.2f", materialCost) + " €"+RESET);
         } else {
-            System.out.println(RED+"Failed to add material."+RESET);
+            System.out.println(RED+" Failed to add material."+RESET);
         }
 
-        System.out.print(CYAN+"\n Would you like to add another material? (y/n): "+RESET);
+        System.out.print("\n Would you like to add another material? (y/n): ");
         }while (scanner.nextLine().equalsIgnoreCase("y"));
 
         return totalMaterialCost;
