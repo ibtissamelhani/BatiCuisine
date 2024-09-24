@@ -214,10 +214,10 @@ public class QuoteUI {
         Quote quote = quoteService.findProjectWithDetails(optionalProject.get().getId());
 
         // Header
-        System.out.printf("%-20s %-15s %-15s %-15s %-15s %-15s %-10s %-15s%n",
+        System.out.printf(BLUE+"%-20s %-15s %-15s %-15s %-15s %-15s %-10s %-15s%n",
                 "Project Name", "Client Name", "Profit Margin",
                 "Total Cost", "Surface Area", "Quote Amount", "Accepted?","status" );
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------"+RESET);
 
         // Display project info
         System.out.printf("%-20s %-15s %-15.2f %-15.2f %-15.2f %-15.2f %-10s %-15s%n",
@@ -232,10 +232,10 @@ public class QuoteUI {
 
 
         // Display Components (Materials and Labor)
-        System.out.println("\nComponents:");
+        System.out.println(BLUE+"\nComponents:");
         System.out.printf("%-15s %-15s %-10s %-15s %-15s%n",
                 "Component Name", "Component Type", "Cost", "Quantity/Hours", "Tax Rate");
-        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------"+RESET);
 
         for (Component component : quote.getProject().getComponentList()) {
             if (component instanceof Material) {
