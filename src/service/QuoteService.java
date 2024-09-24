@@ -34,4 +34,8 @@ public class QuoteService {
     public List<Quote> getAllQuotes() {
         return quoteRepository.findAll();
     }
+
+    public Quote findProjectWithDetails(int id) {
+        return quoteRepository.findProjectWithDetails(id);
+    }
 }

@@ -1,8 +1,7 @@
 package repository;
 
-import model.entities.Client;
-import model.entities.Project;
-import model.entities.Quote;
+import model.entities.*;
+import model.enums.ComponentType;
 import model.enums.ProjectStatus;
 import repository.interfaces.ProjectRepository;
 import repository.interfaces.QuoteRepository;
@@ -145,6 +144,103 @@ public class QuoteRepositoryImpl implements QuoteRepository {
             System.out.println(e.getMessage());
         }
         return devisList;
+    }
+
+    @Override
+    public Quote findProjectWithDetails(int projectId){
+
+        Project project = null;
+        Quote quote = null;
+
+        String projectQuery = "SELECT p.id, p.project_name, p.profit_margin, p.total_cost, p.surface_area, " +
+                "p.project_status, c.id AS clientId, c.name AS clientName, c.address, c.phone, c.is_professional, " +
+                "q.id AS quoteId, q.estimated_amount, q.issue_date, q.validity_date, q.is_accepted " +
+                "FROM projects p " +
+                "JOIN clients c ON p.client_id = c.id " +
+                "JOIN quotes q ON p.id = q.project_id " +
+                "WHERE p.id = ?";
+
+        String componentsQuery = "SELECT co.id, co.name, co.component_type, co.tax_rate, " +
+                "m.id AS materialId, m.unit_cost, m.quantity, m.transport_cost, m.quality_coefficient, " +
+                "l.id AS laborId, l.hourly_rate, l.work_hours, l.worker_productivity " +
+                "FROM components co " +
+                "LEFT JOIN materials m ON co.id = m.component_id " +
+                "LEFT JOIN labors l ON co.id = l.component_id " +
+                "WHERE co.project_id = ?";
+
+        try (PreparedStatement projectStmt = connection.prepareStatement(projectQuery);
+             PreparedStatement componentStmt = connection.prepareStatement(componentsQuery)) {
+
+            // Récupérer les informations du projet, client et devis
+
+            projectStmt.setInt(1, projectId);
+            try (ResultSet projectRs = projectStmt.executeQuery()) {
+                if (projectRs.next()) {
+                    Client client = new Client(
+                            projectRs.getString("clientName"),
+                            projectRs.getString("address"),
+                            projectRs.getString("phone"),
+                            projectRs.getBoolean("is_professional")
+                    );
+
+                    project = new Project(
+                            projectRs.getString("project_name"),
+                            projectRs.getDouble("profit_margin"),
+                            projectRs.getDouble("total_cost"),
+                            ProjectStatus.valueOf(projectRs.getString("project_status")),
+                            projectRs.getDouble("surface_area"),
+                            client
+                    );
+
+                    quote = new Quote(
+                            projectRs.getDouble("estimated_amount"),
+                            projectRs.getDate("issue_date").toLocalDate(),
+                            projectRs.getDate("validity_date").toLocalDate(),
+                            projectRs.getBoolean("is_accepted"),
+                            project
+                    );
+
+
+                }
+            }
+
+            // Récupérer les composants (matériaux et main-d'œuvre)
+            componentStmt.setInt(1, projectId);
+            try (ResultSet componentRs = componentStmt.executeQuery()) {
+                while (componentRs.next()) {
+                    String componentType = componentRs.getString("component_type");
+
+                    if (componentType.equals(ComponentType.MATERIAL.name())) {
+                        Material material = new Material(
+                                componentRs.getString("name"),
+                                ComponentType.valueOf(componentRs.getString("component_type")),
+                                componentRs.getDouble("tax_rate"),
+                                project,
+                                componentRs.getDouble("unit_cost"),
+                                componentRs.getDouble("quantity"),
+                                componentRs.getDouble("transport_cost"),
+                                componentRs.getDouble("quality_coefficient")
+                        );
+                        project.getComponentList().add(material);
+                    } else if (componentType.equals(ComponentType.LABOR.name())) {
+                        Labor labor = new Labor(
+                                componentRs.getString("name"),
+                                ComponentType.valueOf(componentRs.getString("component_type")),
+                                componentRs.getDouble("tax_rate"),
+                                componentRs.getDouble("hourly_rate"),
+                                componentRs.getDouble("work_hours"),
+                                componentRs.getDouble("worker_productivity"),
+                                project
+                        );
+                        project.getComponentList().add(labor);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return quote;
     }
 
 

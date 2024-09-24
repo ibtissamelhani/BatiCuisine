@@ -12,4 +12,5 @@ public interface QuoteRepository {
     boolean delete(int id);
     boolean update(Quote quote);
     List<Quote> findAll();
+    Quote findProjectWithDetails(int projectId);
 }

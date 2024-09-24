@@ -1,6 +1,7 @@
 package ui;
 
 import model.entities.Client;
+import model.entities.Component;
 import model.entities.Project;
 import model.entities.Quote;
 import model.enums.ProjectStatus;
@@ -188,6 +189,41 @@ public class QuoteUI {
                     quote.getValidityDate(),
                     quote.getAccepted() ? "Yes" : "No");
         }
+    }
+    public void findProjectWithDetailsUI(){
+
+        String client_name ;
+        try {
+            client_name = InputValidation.readString("Enter the client name: ");
+        }catch (Exception e){
+            System.err.println("\033[0;31mInvalid client name\033[0m");
+            return;
+        }
+
+        String project_name ;
+        try {
+            project_name = InputValidation.readString("Enter the project name: ");
+        }catch (Exception e){
+            System.err.println("\033[0;31mInvalid project name\033[0m");
+            return;
+        }
+
+        Optional<Project> optionalProject = projectService.findByNameAndClientName(project_name,client_name);
+        if (!optionalProject.isPresent()){
+            System.err.println("\033[0;31mProject not found\033[0m");
+            return;
+        }
+        Quote quote = quoteService.findProjectWithDetails(optionalProject.get().getId());
+
+        System.out.println("project name :" +quote.getProject().getProjectName());
+        System.out.println("client name :" +quote.getProject().getClient().getName());
+
+
+        for(Component c : quote.getProject().getComponentList()){
+            System.out.println("conponent name :" +c.getName());
+            System.out.println("component type : "+c.getComponentType());
+        }
+
     }
 
 

@@ -1,7 +1,10 @@
 package ui;
 
 import model.entities.Client;
+import model.entities.Component;
 import model.entities.Project;
+import model.entities.Quote;
+import model.enums.ComponentType;
 import model.enums.ProjectStatus;
 import service.ClientService;
 import service.ProjectService;
@@ -103,10 +106,6 @@ public class ProjectUI {
         }
 
 
-    }
-
-    public Project findProjectWithDetailsUI(){
-        return null;
     }
 
 }
