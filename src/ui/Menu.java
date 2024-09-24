@@ -137,9 +137,19 @@ public class Menu {
             switch(choice){
                 case "1":
                     client = clientUI.searchClientUI();
+                    if (client != null) {
+                        projectUI.createProjectForClient(client);
+                    } else {
+                        System.out.println("Client not found");
+                    }
                     break;
                 case "2":
                     client = clientUI.createClientUI();
+                    if (client != null) {
+                        projectUI.createProjectForClient(client);
+                    } else {
+                        System.out.println("Client not found");
+                    }
                     break;
                 case "3":
                     quoteUI.findProjectWithDetailsUI();
@@ -154,11 +164,7 @@ public class Menu {
                 default:
                     System.out.println("Invalid choice");
             }
-            if (client != null) {
-                projectUI.createProjectForClient(client);
-            } else {
-                System.out.println("Client non trouvé ou création échouée.");
-            }
+
 
         }
     }
