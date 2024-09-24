@@ -1,6 +1,7 @@
 package service;
 
 import model.entities.Project;
+import model.entities.Quote;
 import repository.ProjectRepositoryImpl;
 import repository.interfaces.ProjectRepository;
 
@@ -49,7 +50,4 @@ public class ProjectService {
         return projectRepository.update(project);
     }
 
-    public Project findProjectWithDetails(int id) {
-        return projectRepository.findProjectWithDetails(id);
-    }
 }

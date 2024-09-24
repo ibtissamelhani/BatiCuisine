@@ -121,29 +121,38 @@ public class Menu {
 
     public void projectMenu(){
         while(!quit){
-            System.out.println("\n\n********************************************************************************");
-            System.out.println("*                           PROJECT MANAGEMENT                                 *");
-            System.out.println("********************************************************************************");
-            System.out.println("*  1. Search for an existing client                                            *");
-            System.out.println("*  2. Add a new client                                                         *");
-            System.out.println("*  3. Show Project                                                             *");
-            System.out.println("*  4. Return to Main Menu                                                      *");
-            System.out.println("*  5. Exit                                                                     *");
-            System.out.println("********************************************************************************\n"+RESET);
+            System.out.println("\n\n"+space+"********************************************************************************");
+            System.out.println(space+"*                           PROJECT MANAGEMENT                                 *");
+            System.out.println(space+"********************************************************************************");
+            System.out.println(space+"*  1. Search for an existing client                                            *");
+            System.out.println(space+"*  2. Add a new client                                                         *");
+            System.out.println(space+"*  3. Show Project                                                             *");
+            System.out.println(space+"*  4. Return to Main Menu                                                      *");
+            System.out.println(space+"*  5. Exit                                                                     *");
+            System.out.println(space+"********************************************************************************\n"+RESET);
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();
             Client client = null;
-            Project project = null;
             switch(choice){
                 case "1":
                     client = clientUI.searchClientUI();
+                    if (client != null) {
+                        projectUI.createProjectForClient(client);
+                    } else {
+                        System.out.println("Client not found");
+                    }
                     break;
                 case "2":
                     client = clientUI.createClientUI();
+                    if (client != null) {
+                        projectUI.createProjectForClient(client);
+                    } else {
+                        System.out.println("Client not found");
+                    }
                     break;
                 case "3":
-                    project = projectUI.findProjectWithDetailsUI();
+                    quoteUI.findProjectWithDetailsUI();
                     break;
                 case "4":
                     quit = true;
@@ -155,11 +164,7 @@ public class Menu {
                 default:
                     System.out.println("Invalid choice");
             }
-            if (client != null) {
-                projectUI.createProjectForClient(client);
-            } else {
-                System.out.println("Client non trouvé ou création échouée.");
-            }
+
 
         }
     }
