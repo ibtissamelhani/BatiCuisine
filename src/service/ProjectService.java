@@ -5,6 +5,7 @@ import model.entities.Quote;
 import repository.ProjectRepositoryImpl;
 import repository.interfaces.ProjectRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProjectService {
@@ -48,6 +49,10 @@ public class ProjectService {
 
     public boolean update(Project project) {
         return projectRepository.update(project);
+    }
+
+    public List<Project> findAll() {
+        return projectRepository.getAllProjects();
     }
 
 }
