@@ -126,7 +126,7 @@ public class Menu {
             System.out.println(space+"********************************************************************************");
             System.out.println(space+"*  1. Search for an existing client                                            *");
             System.out.println(space+"*  2. Add a new client                                                         *");
-            System.out.println(space+"*  3. Show Project                                                             *");
+            System.out.println(space+"*  3. Show Project of client                                                   *");
             System.out.println(space+"*  4. Return to Main Menu                                                      *");
             System.out.println(space+"*  5. Exit                                                                     *");
             System.out.println(space+"********************************************************************************\n"+RESET);

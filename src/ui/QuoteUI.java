@@ -102,18 +102,13 @@ public class QuoteUI {
                 }
             }
 
-            String saveChoice = InputValidation.readString("Do you wish to save the changes? (y/n): ");
-            if (saveChoice.equalsIgnoreCase("y")) {
+
                 boolean success = quoteService.update(quote);
                 if (success) {
                     System.out.println("Quote updated successfully!");
                 } else {
                     System.out.println("Error while updating the quote.");
                 }
-            } else {
-                System.out.println("Quote update canceled.");
-            }
-
 
         }
 

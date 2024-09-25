@@ -10,7 +10,7 @@ public class Client {
     private String address;
     private String phone;
     private Boolean isProfessional;
-    private List<Project> projects;
+    private List<Project> projects = new ArrayList<>();
 
     public Client() {
     }

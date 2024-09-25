@@ -20,7 +20,6 @@ public class DataBaseConnection {
             String USER = properties.getProperty("db.user");
             String PASSWORD = properties.getProperty("db.password");
             String driver = properties.getProperty("db.driver");
-
             Class.forName(driver);
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connection to PostgreSQL database done.");
@@ -55,6 +54,5 @@ public class DataBaseConnection {
             e.printStackTrace();
         }
     }
-
 
 }
