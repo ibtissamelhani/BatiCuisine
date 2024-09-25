@@ -10,7 +10,7 @@ public class Client {
     private String address;
     private String phone;
     private Boolean isProfessional;
-    private List<Project> projects;
+    private List<Project> projects = new ArrayList<>();
 
     public Client() {
     }
@@ -69,5 +69,17 @@ public class Client {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isProfessional=" + isProfessional +
+                ", projects=" + projects +
+                '}';
     }
 }

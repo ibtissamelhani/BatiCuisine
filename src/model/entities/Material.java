@@ -13,8 +13,8 @@ public class Material extends Component {
     public Material() {
     }
 
-    public Material(String name, ComponentType componentType, Double taxRate, Double unitCost, Double quantity, Double transportCost, Double qualityCoefficient) {
-        super(name, componentType, taxRate);
+    public Material(String name, ComponentType componentType, Double taxRate, Project project, Double unitCost, Double quantity, Double transportCost, Double qualityCoefficient) {
+        super(name, componentType, taxRate,project);
         this.unitCost = unitCost;
         this.quantity = quantity;
         this.transportCost = transportCost;
@@ -61,8 +61,9 @@ public class Material extends Component {
         this.qualityCoefficient = qualityCoefficient;
     }
 
-    public Double calculateCost() {
-        System.out.println("Materiel calculateCost");
-        return 0.0;
+    public Double calculateTotalCost() {
+        Double costBeforeTax = (unitCost * quantity * qualityCoefficient) + transportCost;
+        Double costWithTax = costBeforeTax * (1 + (getTaxRate() / 100));
+        return costWithTax;
     }
 }
