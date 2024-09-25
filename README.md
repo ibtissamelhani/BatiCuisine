@@ -29,14 +29,6 @@
 - **JDBC** for database connection management
 
 ---
-
-## Installation
-
-### 1. Clone the GitHub repository:
-
-```bash
-git clone https://github.com/your-username/baticuisine.git
-
 ## Configure the database:
 Create a PostgreSQL database named BatiCuisine.
 Run the SQL scripts located in the sql folder to create the necessary tables.
@@ -47,3 +39,10 @@ UI Layer: User interface (interactions with the user).
 Service Layer: Business logic, handling quotes, clients, and projects.
 Repository Layer: Data access via JDBC, managing transactions with the database.
 Model Layer: Defines entities (Client, Project, Quote, Material, Labor).
+
+## Installation
+
+### 1. Clone the GitHub repository:
+
+```bash
+git clone https://github.com/your-username/baticuisine.git
