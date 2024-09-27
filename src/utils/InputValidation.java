@@ -48,7 +48,11 @@ public class InputValidation {
             try {
                 value = scanner.nextDouble();
                 scanner.nextLine();
-                valid = true;
+                if(value > 0){
+                    valid = true;
+                }else {
+                    System.out.println("Error: Please enter a valid number.");
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Error: The value must be a number.");
                 scanner.next();
