@@ -1,12 +1,12 @@
 package repository;
 
 import model.entities.Client;
+import model.entities.Project;
+import model.enums.ProjectStatus;
 import repository.interfaces.ClientRepository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ClientRepositoryImpl implements ClientRepository {
 
@@ -124,24 +124,44 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public List<Client> findAll() {
-        List<Client> clients = new ArrayList<>();
+        Map<Integer,Client> clientMap = new HashMap<>();
 
-        String sql = "SELECT * FROM clients";
+        String sql =  "SELECT c.id AS client_id, c.name AS client_name, c.address, c.phone, c.is_professional, " +
+                "p.id AS project_id, p.project_name, p.total_cost, p.profit_margin, p.project_status " +
+                "FROM clients c " +
+                "LEFT JOIN projects p ON c.id = p.client_id " +
+                "ORDER BY c.id";
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Client client = new Client();
-                client.setId(rs.getInt("id"));
-                client.setName(rs.getString("name"));
-                client.setAddress(rs.getString("address"));
-                client.setPhone(rs.getString("phone"));
-                client.setProfessional(rs.getBoolean("is_professional"));
-                clients.add(client);
+                int id = rs.getInt("client_id");
+                Client client = clientMap.get(id);
+                if (client == null) {
+                    client = new Client();
+                    client.setId(rs.getInt("client_id"));
+                    client.setName(rs.getString("client_name"));
+                    client.setAddress(rs.getString("address"));
+                    client.setPhone(rs.getString("phone"));
+                    client.setProfessional(rs.getBoolean("is_professional"));
+                    clientMap.put(id, client);
+                }
+                int project_id = rs.getInt("project_id");
+                if (project_id != 0) {
+                    Project project = new Project();
+                    project.setClient(client);
+                    project.setProjectName(rs.getString("project_name"));
+                    project.setTotalCost(rs.getDouble("total_cost"));
+                    project.setProfitMargin(rs.getDouble("profit_margin"));
+                    project.setProjectStatus(ProjectStatus.valueOf(rs.getString("project_status")));
+                    project.setId(project_id);
+                    client.getProjects().add(project);
+                }
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return clients;
+        return new ArrayList<>(clientMap.values());
     }
 }

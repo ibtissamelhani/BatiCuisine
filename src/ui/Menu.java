@@ -2,7 +2,9 @@ package ui;
 
 import database.DataBaseConnection;
 import model.entities.Client;
+import model.entities.Project;
 import repository.*;
+import repository.interfaces.*;
 import service.*;
 
 import java.sql.Connection;
@@ -12,11 +14,11 @@ public class Menu {
 
     private final Connection connection =  DataBaseConnection.getInstance().getConnection();
 
-    private final MaterialRepositoryImpl materialRepository = new MaterialRepositoryImpl(connection);
-    private final ClientRepositoryImpl clientRepository = new ClientRepositoryImpl(connection);
-    private final ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
-    private final LaborRepositoryImpl laborRepository = new LaborRepositoryImpl(connection);
-    private final QuoteRepositoryImpl quoteRepository = new QuoteRepositoryImpl(connection, projectRepository);
+    private final MaterialRepository materialRepository = new MaterialRepositoryImpl(connection);
+    private final ClientRepository clientRepository = new ClientRepositoryImpl(connection);
+    private final ProjectRepository projectRepository = new ProjectRepositoryImpl(clientRepository,connection);
+    private final LaborRepository laborRepository = new LaborRepositoryImpl(connection);
+    private final QuoteRepository quoteRepository = new QuoteRepositoryImpl(connection, projectRepository);
 
     private final ClientService clientService = new ClientService(clientRepository);
     private final ProjectService projectService = new ProjectService(projectRepository);
@@ -119,41 +121,50 @@ public class Menu {
 
     public void projectMenu(){
         while(!quit){
-            System.out.println(YELLOW+"\n\n"+space+"********************************************************************************");
-            System.out.println(space+"*     Would you like to search for an existing client or add a new one?        *");
+            System.out.println("\n\n"+space+"********************************************************************************");
+            System.out.println(space+"*                           PROJECT MANAGEMENT                                 *");
             System.out.println(space+"********************************************************************************");
             System.out.println(space+"*  1. Search for an existing client                                            *");
             System.out.println(space+"*  2. Add a new client                                                         *");
-            System.out.println(space+"*  3. Return to Main Menu                                                      *");
-            System.out.println(space+"*  4. Exit                                                                     *");
+            System.out.println(space+"*  3. Show Project of client                                                   *");
+            System.out.println(space+"*  4. Return to Main Menu                                                      *");
+            System.out.println(space+"*  5. Exit                                                                     *");
             System.out.println(space+"********************************************************************************\n"+RESET);
 
             System.out.print("enter your choice: ");
             String choice = scanner.nextLine();
             Client client = null;
-
             switch(choice){
                 case "1":
                     client = clientUI.searchClientUI();
+                    if (client != null) {
+                        projectUI.createProjectForClient(client);
+                    } else {
+                        System.out.println("Client not found");
+                    }
                     break;
                 case "2":
                     client = clientUI.createClientUI();
+                    if (client != null) {
+                        projectUI.createProjectForClient(client);
+                    } else {
+                        System.out.println("Client not found");
+                    }
                     break;
                 case "3":
+                    quoteUI.findProjectWithDetailsUI();
+                    break;
+                case "4":
                     quit = true;
                     System.out.println("return to principal menu");
                     break;
-                case "4":
+                case "5":
                     System.out.println("exit");
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice");
             }
-            if (client != null) {
-                projectUI.createProjectForClient(client);
-            } else {
-                System.out.println("Client non trouvé ou création échouée.");
-            }
+
 
         }
     }

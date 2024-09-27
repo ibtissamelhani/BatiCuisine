@@ -1,8 +1,7 @@
 package ui;
 
-import model.entities.Client;
-import model.entities.Project;
-import model.entities.Quote;
+import model.entities.*;
+import model.enums.ProjectStatus;
 import service.ProjectService;
 import service.QuoteService;
 import utils.DateFormat;
@@ -95,20 +94,21 @@ public class QuoteUI {
             String acceptedInput = InputValidation.readString("Is the quote accepted? (y/n, or press Enter to keep current): ");
             if (!acceptedInput.isEmpty()) {
                 quote.setAccepted(acceptedInput.equalsIgnoreCase("y"));
+                if (!quote.getAccepted() || quote.getValidityDate().isBefore(LocalDate.now())) {
+                    Project project = quote.getProject();
+                    project.setProjectStatus(ProjectStatus.CANCELED);
+                    projectService.update(project);
+                    System.out.println("The project status has been updated to CANCELED due to the quote being refused or invalid.");
+                }
             }
 
-            String saveChoice = InputValidation.readString("Do you wish to save the changes? (y/n): ");
-            if (saveChoice.equalsIgnoreCase("y")) {
+
                 boolean success = quoteService.update(quote);
                 if (success) {
                     System.out.println("Quote updated successfully!");
                 } else {
                     System.out.println("Error while updating the quote.");
                 }
-            } else {
-                System.out.println("Quote update canceled.");
-            }
-
 
         }
 
@@ -181,6 +181,71 @@ public class QuoteUI {
                     quote.getValidityDate(),
                     quote.getAccepted() ? "Yes" : "No");
         }
+    }
+
+    public void findProjectWithDetailsUI(){
+
+        String client_name ;
+        try {
+            client_name = InputValidation.readString("Enter the client name: ");
+        }catch (Exception e){
+            System.err.println("\033[0;31mInvalid client name\033[0m");
+            return;
+        }
+
+        String project_name ;
+        try {
+            project_name = InputValidation.readString("Enter the project name: ");
+        }catch (Exception e){
+            System.err.println("\033[0;31mInvalid project name\033[0m");
+            return;
+        }
+
+        Optional<Project> optionalProject = projectService.findByNameAndClientName(project_name,client_name);
+        if (!optionalProject.isPresent()){
+            System.err.println("\033[0;31mProject not found\033[0m");
+            return;
+        }
+        Quote quote = quoteService.findProjectWithDetails(optionalProject.get().getId());
+
+        // Header
+        System.out.printf(BLUE+"%-20s %-15s %-15s %-15s %-15s %-15s %-10s %-15s%n",
+                "Project Name", "Client Name", "Profit Margin",
+                "Total Cost", "Surface Area", "Quote Amount", "Accepted?","status" );
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------"+RESET);
+
+        // Display project info
+        System.out.printf("%-20s %-15s %-15.2f %-15.2f %-15.2f %-15.2f %-10s %-15s%n",
+                quote.getProject().getProjectName(),
+                quote.getProject().getClient().getName(),
+                quote.getProject().getProfitMargin(),
+                quote.getProject().getTotalCost(),
+                quote.getProject().getSurfaceArea(),
+                quote.getEstimatedAmount(),
+                quote.getAccepted() ? "Yes" : "No",
+                quote.getProject().getProjectStatus());
+
+
+        // Display Components (Materials and Labor)
+        System.out.println(BLUE+"\nComponents:");
+        System.out.printf("%-15s %-15s %-10s %-15s %-15s%n",
+                "Component Name", "Component Type", "Cost", "Quantity/Hours", "Tax Rate");
+        System.out.println("---------------------------------------------------------------------------"+RESET);
+
+        for (Component component : quote.getProject().getComponentList()) {
+            if (component instanceof Material) {
+                Material material = (Material) component;
+                System.out.printf("%-15s %-15s %-10.2f %-15.2f %-15.2f%n",
+                        material.getName(), "Material", material.calculateTotalCost(),
+                        material.getQuantity(), material.getTaxRate());
+            } else if (component instanceof Labor) {
+                Labor labor = (Labor) component;
+                System.out.printf("%-15s %-15s %-10.2f %-15.2f %-15.2f%n",
+                        labor.getName(), "Labor", labor.calculateTotalCost(),
+                        labor.getWorkHours(), labor.getTaxRate());
+            }
+        }
+
     }
 
 

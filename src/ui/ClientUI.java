@@ -135,18 +135,34 @@ public class ClientUI {
     }
 
     public void showAllClients() {
-        System.out.println(RED+"\t\t\t\t List of All Clients "+RESET);
+        System.out.println(RED + "\t\t\t\t List of All Clients " + RESET);
         List<Client> clients = clientService.getAllClients();
-        if (clients != null) {
-            System.out.println("\n+------+------------------+--------------------------+---------------------+------------------+");
-            System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s |\n","ID", "Name", "Address", "Phone", "Professional");
-            System.out.println("+------+------------------+--------------------------+---------------------+------------------+");
-            for (Client client : clients) {
-                System.out.printf("| %-4s | %-16s | %-24s |%-20s | %-16s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional()?"yes":"no");
+
+        if (clients != null && !clients.isEmpty()) {
+            clients.stream().forEach(client -> {
+                System.out.println("\n+------+------------------+--------------------------+---------------------+------------------+");
+                System.out.printf("| %-4s | %-16s | %-24s | %-20s | %-16s |\n", client.getId(), client.getName(), client.getAddress(), client.getPhone(), client.getProfessional() ? "yes" : "no");
                 System.out.println("+------+------------------+--------------------------+---------------------+------------------+");
 
-            }
-        }
+                // Display project info using Streams
+                if (client.getProjects() != null && !client.getProjects().isEmpty()) {
+                    System.out.println("\t\t\t Projects for " + client.getName() + ":");
+                    System.out.println("\t\t\t+--------+----------------------+---------------------+-------------------+");
+                    System.out.printf("\t\t\t| %-6s | %-20s | %-19s | %-17s |\n", "ID", "Project Name", "Total Cost (€)", "Profit Margin (%)");
+                    System.out.println("\t\t\t+--------+----------------------+---------------------+-------------------+");
 
+                    client.getProjects().stream().forEach(project -> {
+                        System.out.printf("\t\t\t| %-6d | %-20s | %-19.2f | %-17.2f |\n", project.getId(), project.getProjectName(), project.getTotalCost(), project.getProfitMargin());
+                        System.out.println("\t\t\t+--------+----------------------+---------------------+-------------------+");
+                    });
+                } else {
+                    // If no projects for the client
+                    System.out.println("\t\t\tNo projects for " + client.getName());
+                }
+            });
+        } else {
+            System.out.println("No clients found.");
+        }
     }
+
 }

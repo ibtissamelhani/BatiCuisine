@@ -3,12 +3,13 @@ package service;
 import model.entities.Labor;
 import model.entities.Material;
 import repository.LaborRepositoryImpl;
+import repository.interfaces.LaborRepository;
 
 public class LaborService {
 
-    private LaborRepositoryImpl laborRepository;
+    private LaborRepository laborRepository;
 
-    public LaborService(LaborRepositoryImpl laborRepository) {
+    public LaborService(LaborRepository laborRepository) {
         this.laborRepository = laborRepository;
     }
 

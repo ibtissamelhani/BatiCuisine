@@ -1,16 +1,16 @@
 package service;
 
 import model.entities.Client;
-import repository.ClientRepositoryImpl;
+import repository.interfaces.ClientRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class ClientService {
 
-    private ClientRepositoryImpl clientRepositoryImpl;
+    private ClientRepository clientRepositoryImpl;
 
-    public ClientService(ClientRepositoryImpl clientRepositoryImpl) {
+    public ClientService(ClientRepository clientRepositoryImpl) {
         this.clientRepositoryImpl = clientRepositoryImpl;
     }
 

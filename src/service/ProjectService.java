@@ -1,15 +1,18 @@
 package service;
 
 import model.entities.Project;
+import model.entities.Quote;
 import repository.ProjectRepositoryImpl;
+import repository.interfaces.ProjectRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProjectService {
 
-    private ProjectRepositoryImpl projectRepository;
+    private ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepositoryImpl projectRepository) {
+    public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
@@ -29,7 +32,7 @@ public class ProjectService {
         opProject.get().setProfitMargin(profitMargin);
         opProject.get().setTotalCost(totalCost);
 
-        boolean success = projectRepository.updateTotalCost(opProject.get());
+        boolean success = projectRepository.update(opProject.get());
         if (success) {
             System.out.println("Project updated");
             return true;
@@ -43,4 +46,13 @@ public class ProjectService {
     public Optional<Project> findByNameAndClientName(String projectName, String clientName){
         return projectRepository.findByNameAndClient(projectName, clientName);
     }
+
+    public boolean update(Project project) {
+        return projectRepository.update(project);
+    }
+
+    public List<Project> findAll() {
+        return projectRepository.getAllProjects();
+    }
+
 }

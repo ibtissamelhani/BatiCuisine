@@ -2,15 +2,16 @@ package service;
 
 import model.entities.Quote;
 import repository.QuoteRepositoryImpl;
+import repository.interfaces.QuoteRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class QuoteService {
 
-    private QuoteRepositoryImpl quoteRepository;
+    private QuoteRepository quoteRepository;
 
-    public QuoteService(QuoteRepositoryImpl quoteRepository) {
+    public QuoteService(QuoteRepository quoteRepository) {
         this.quoteRepository = quoteRepository;
     }
 
@@ -32,5 +33,9 @@ public class QuoteService {
 
     public List<Quote> getAllQuotes() {
         return quoteRepository.findAll();
+    }
+
+    public Quote findProjectWithDetails(int id) {
+        return quoteRepository.findProjectWithDetails(id);
     }
 }
