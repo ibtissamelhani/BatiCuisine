@@ -17,6 +17,10 @@ public class DateFormat {
             String dateStr = scanner.nextLine();
             try {
                 date = LocalDate.parse(dateStr, dateFormat);
+                if (date.isBefore(LocalDate.now())) {
+                    System.out.println("Invalid date");
+                    date = null;
+                }
             } catch (DateTimeParseException e) {
                 System.out.println("Error: Invalid date format. Please enter the date in the format dd/MM/yyyy.");
             }
